@@ -41,7 +41,7 @@ export default function ContactSection() {
 
   return (
     <section id="contact" className="w-full py-20 px-4 md:px-8 lg:px-12 bg-black text-white">
-      <div className="container mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -51,7 +51,7 @@ export default function ContactSection() {
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
               Let's Create{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fea85b] to-[#da373c]">
                 Together
               </span>
             </h2>
@@ -213,7 +213,7 @@ export default function ContactSection() {
 
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                className="w-full bg-gradient-to-r  from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987] "
               >
                 Send Message
                 <Send className="ml-2 h-4 w-4" />

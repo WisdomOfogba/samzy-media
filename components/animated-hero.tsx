@@ -130,9 +130,9 @@ export default function AnimatedHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <span className="block">Motion Graphics</span>
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-            & Animation Studio
+          <span className="block">Crafting</span>
+          <span className="text-transparent bg-transparent bg-clip-text bg-gradient-to-r from-[#da373c] to-[#fea85b]">
+            Visual Worlds
           </span>
         </motion.h1>
 
@@ -153,13 +153,13 @@ export default function AnimatedHero() {
         >
           <a
             href="#services"
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium hover:from-purple-700 hover:to-pink-700 transition-colors"
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987] transition-colors"
           >
             Explore Our Services
           </a>
           <a
             href="/portfolio"
-            className="px-8 py-4 rounded-full bg-white/10 backdrop-blur-sm text-white font-medium hover:bg-white/20 transition-colors"
+            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#da373c] to-[#fea85b] text-white font-medium  hover:from-[#fea85b] hover:to-[#da373c] transition-colors"
           >
             View Portfolio
           </a>

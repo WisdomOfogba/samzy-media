@@ -1,14 +1,19 @@
+import Image from "next/image"
 import Link from "next/link"
 
 export default function Footer() {
   return (
     <footer className="w-full py-12 px-4 md:px-8 lg:px-12 bg-black text-white border-t border-white/10">
-      <div className="container mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <Link href="/" className="text-white font-bold text-2xl inline-block mb-4">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">Samzy</span>
-              Media
+            <Link href="/" className="text-whitefont-bold text-2xl inline-block mb-4">
+                <Image
+                  src="/logo.png"
+                  alt="Samzy media production logo"
+                  width={200}
+                  height={150}
+                />
             </Link>
             <p className="text-gray-400 mb-6">
               Creating captivating visual experiences through motion, design, and sound.
@@ -62,11 +67,11 @@ export default function Footer() {
                   Portfolio
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/live-streaming" className="text-gray-400 hover:text-purple-400 transition-colors">
                   Live Streaming
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/#services" className="text-gray-400 hover:text-purple-400 transition-colors">
                   Services
