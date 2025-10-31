@@ -46,14 +46,14 @@ export default function Home() {
             </div>
             <Link
               href="/portfolio"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-[##5c0987] hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-medium hover:bg-[#5c0987] hover:text-white transition-colors"
             >
               View all projects
               <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
 
-          <PortfolioGrid featured={true} limit={6} />
+          <PortfolioGrid featured={true} limit={7} />
         </div>
       </section>
 

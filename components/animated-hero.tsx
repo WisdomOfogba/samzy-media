@@ -149,7 +149,7 @@ export default function AnimatedHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col sm:flex-row gap-4"
+          className="flex flex-col w-full sm:w-max sm:flex-row gap-4"
         >
           <a
             href="#services"

@@ -12,10 +12,11 @@ export default function PortfolioFilter({
   onSelectCategory,
 }: PortfolioFilterProps) {
   const categories = [
-    { id: "motion-graphics", label: "Motion Graphics" },
-    { id: "animation", label: "Animation" },
-    { id: "logo-animation", label: "Logo Animation" },
-    { id: "media-production", label: "Media Production" },
+    { id: "Motion Graphics", label: "Motion Graphics" },
+    { id: "Animations", label: "Animations" },
+    { id: "Logo Montage", label: "Logo Montage" },
+    { id: "Graphics Design", label: "Graphics Design" },
+    { id: "Birthday Designs", label: "Birthday Designs" },
   ]
 
   return (
