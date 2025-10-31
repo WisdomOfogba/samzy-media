@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
 export default function ContactSection() {
+  const [isLoading, setIsLoading] = useState(false)
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -24,19 +25,35 @@ export default function ContactSection() {
     })
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formState)
-    // Reset form
-    setFormState({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    })
-    // Show success message
-    alert("Message sent successfully!")
+    try {
+      setIsLoading(true)
+
+      if (!formState.name || !formState.email || !formState.subject || !formState.message) {
+        console.log("Fill required fields")
+        alert("Fill required fields")
+        return
+      }
+
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({to: "ssylvanus89@gmail.com", subject: "New Message from Samzy media Website", formData: formState}),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert(data.message);
+        setFormState({ name: "", email: "", subject: "", message: "" });
+      } else {
+        alert(data.error || "Something went wrong");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send message");
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -80,7 +97,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Email</h3>
-                  <p className="text-gray-300">contact@samzymedia.com</p>
+                  <p className="text-gray-300">ssylvanus89@gmail.com</p>
                 </div>
               </div>
 
@@ -103,7 +120,7 @@ export default function ContactSection() {
                 </div>
                 <div>
                   <h3 className="text-lg font-medium">Phone</h3>
-                  <p className="text-gray-300">+234 81 2345 6789</p>
+                  <p className="text-gray-300">+234 814 569 5589</p>
                 </div>
               </div>
 
@@ -213,9 +230,10 @@ export default function ContactSection() {
 
               <Button
                 type="submit"
+                disabled={isLoading}
                 className="w-full bg-gradient-to-r  from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987] "
               >
-                Send Message
+                {isLoading ? "Loading..." : "Send Message"}
                 <Send className="ml-2 h-4 w-4" />
               </Button>
             </form>
