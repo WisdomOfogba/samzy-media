@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Film, Layers, Play, Music, Tv } from "lucide-react"
+import { Film, Layers, Play, Music, Tv, ImagesIcon } from "lucide-react"
 import { MediaItem, mediaItems } from "@/lib/data"
 import Image from "next/image"
 
@@ -26,22 +26,16 @@ export default function ServicesSection() {
       description: "Dynamic logo animations that enhance brand recognition and engagement.",
     },
     {
-      icon: <Tv className="h-10 w-10" />,
-      title: "Media Production",
+      icon: <ImagesIcon className="h-10 w-10" />,
+      title: "Birthday Designs",
       image: mediaItems.find(item => item.category === "Birthday Designs"),
-      description: "Full-service media production for commercials, explainer videos, and promotional content.",
+      description: "Personalized birthday designs and visual content to celebrate special moments.",
     },
     {
-      icon: <Tv className="h-10 w-10" />,
-      title: "Media Production",
+      icon: <ImagesIcon className="h-10 w-10" />,
+      title: "Graphics Design",
       image: mediaItems.find(item => item.category === "Graphics Design"),
-      description: "Full-service media production for commercials, explainer videos, and promotional content.",
-    },
-    {
-      icon: <Music className="h-10 w-10" />,
-      title: "Sound Management",
-      image: mediaItems.find(item => item.category === "Sound Management"),
-      description: "Professional sound design, mixing, and audio production for all your projects.",
+      description: "Professional graphic design services for social media, marketing materials, and branding.",
     },
   ]
 
