@@ -8,7 +8,7 @@ export default function CinematicLogo() {
       {/* Background video */}
       <video
         className="absolute inset-0 h-full w-full object-cover"
-        src="/placeholder-video.mp4"
+        src="/montage.mp4"
         autoPlay
         loop
         muted
