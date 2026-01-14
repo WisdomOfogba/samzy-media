@@ -10,11 +10,6 @@ type Params = { params: Promise<{ id: string }> }
  */
 export async function GET(request: NextRequest, { params }: Params) {
   try {
-    const auth = verifyAuth(request)
-    if (!auth) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-
     await connectDB()
     const { id } = await params
 

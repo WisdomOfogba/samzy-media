@@ -5,10 +5,6 @@ import { PortfolioWork } from "@/models/Work"
 
 export async function GET(request: NextRequest) {
   try {
-    const auth = verifyAuth(request)
-    if (!auth) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
 
     await connectDB()
     const works = await PortfolioWork.find().sort({ createdAt: -1 })
