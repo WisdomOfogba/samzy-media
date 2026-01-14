@@ -42,3 +42,29 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* globals.css */
+@layer utilities {
+  .skeleton {
+    @apply relative overflow-hidden bg-white/10 rounded-xl;
+  }
+
+  .skeleton::after {
+    content: "";
+    @apply absolute inset-0 -translate-x-full;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.15),
+      transparent
+    );
+    animation: shimmer 1.4s infinite;
+  }
+
+  @keyframes shimmer {
+    100% {
+      transform: translateX(100%);
+    }
+  }
+}
+

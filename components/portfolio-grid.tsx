@@ -1,30 +1,44 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
-import { Play, X } from "lucide-react"
-import { MediaItem, mediaItems } from "@/lib/data"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { Play, X } from "lucide-react";
+import { MediaItem } from "@/lib/data";
+import { useProjects } from "@/context/ProjectsContext";
+import { PortfolioSkeleton } from "./Loader";
 
 interface PortfolioGridProps {
-  featured?: boolean
-  limit?: number
-  selectedCategory?: string | null
+  featured?: boolean;
+  limit?: number;
+  selectedCategory?: string | null;
 }
 
-export default function PortfolioGrid({ featured = false, limit, selectedCategory }: PortfolioGridProps) {
-  const [items, setItems] = useState<MediaItem[]>([])
-  const [selectedItem, setSelectedItem] = useState<MediaItem | null>(null)
+export default function PortfolioGrid({
+  featured = false,
+  limit,
+  selectedCategory,
+}: PortfolioGridProps) {
+  const { projects: mediaItems, loading } = useProjects();
+  const [items, setItems] = useState<MediaItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<MediaItem | null>(null);
 
   useEffect(() => {
-    let filteredItems = mediaItems
+    let filteredItems = mediaItems;
 
-    if (featured) filteredItems = filteredItems.filter((item) => item.featured)
-    if (selectedCategory) filteredItems = filteredItems.filter((item) => item.category === selectedCategory)
-    if (limit) filteredItems = filteredItems.slice(0, limit)
+    if (featured) filteredItems = filteredItems.filter((item) => item.featured);
+    if (selectedCategory)
+      filteredItems = filteredItems.filter(
+        (item) => item.category === selectedCategory
+      );
+    if (limit) filteredItems = filteredItems.slice(0, limit);
 
-    setItems(filteredItems)
-  }, [featured, limit, selectedCategory])
+    setItems(filteredItems);
+  }, [mediaItems, featured, limit, selectedCategory]);
+
+  if (loading) {
+    return <PortfolioSkeleton />;
+  }
 
   return (
     <>
@@ -56,14 +70,16 @@ export default function PortfolioGrid({ featured = false, limit, selectedCategor
               <div className="text-[10px] sm:text-xs font-medium text-purple-400 uppercase tracking-wider mb-1">
                 {portfolioItem.category}
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white line-clamp-1">{portfolioItem.title}</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-white line-clamp-1">
+                {portfolioItem.title}
+              </h3>
 
               {/* Play Icon for Video */}
               {portfolioItem.type === "video" && (
                 <button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    setSelectedItem(portfolioItem)
+                    e.stopPropagation();
+                    setSelectedItem(portfolioItem);
                   }}
                   className="mt-3 h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
                 >
@@ -98,7 +114,7 @@ export default function PortfolioGrid({ featured = false, limit, selectedCategor
                   src={selectedItem.mediaUrl}
                   controls
                   autoPlay
-                  className="w-full max-h-[80vh] rounded-lg object-contain"
+                  className="w-full h-[80vh] rounded-lg object-contain"
                 />
               ) : (
                 <Image
@@ -106,12 +122,14 @@ export default function PortfolioGrid({ featured = false, limit, selectedCategor
                   alt={selectedItem.title}
                   width={1200}
                   height={800}
-                  className="w-full max-h-[80vh] rounded-lg object-contain"
+                  className="w-full h-[80vh] rounded-lg object-contain"
                 />
               )}
 
               <div className="mt-4 text-center text-white">
-                <h3 className="text-xl font-bold sm:text-2xl">{selectedItem.title}</h3>
+                <h3 className="text-xl font-bold sm:text-2xl">
+                  {selectedItem.title}
+                </h3>
                 <p className="text-xs sm:text-sm text-gray-300 mt-1 uppercase tracking-wide">
                   {selectedItem.category}
                 </p>
@@ -121,5 +139,5 @@ export default function PortfolioGrid({ featured = false, limit, selectedCategor
         )}
       </AnimatePresence>
     </>
-  )
+  );
 }

@@ -17,6 +17,7 @@ export default function ContactSection() {
     subject: "",
     message: "",
   })
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "test@gmail.com"
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
@@ -39,7 +40,7 @@ export default function ContactSection() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({to: "ssylvanus89@gmail.com", subject: "New Message from Samzy media Website", formData: formState}),
+        body: JSON.stringify({to: ADMIN_EMAIL, subject: "New Message from Samzy media Website", formData: formState}),
       });
       const data = await res.json();
       if (res.ok) {

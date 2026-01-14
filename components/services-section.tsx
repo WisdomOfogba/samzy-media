@@ -2,10 +2,17 @@
 
 import { motion } from "framer-motion"
 import { Film, Layers, Play, Music, Tv, ImagesIcon } from "lucide-react"
-import { MediaItem, mediaItems } from "@/lib/data"
+// import { mediaItems } from "@/lib/data"
 import Image from "next/image"
+import { Loader, ServicesSkeleton } from "./Loader"
+import { useProjects } from "@/context/ProjectsContext"
 
 export default function ServicesSection() {
+    const { projects: mediaItems, loading } = useProjects()
+
+  if (loading) {
+    return <ServicesSkeleton />
+  }
   const services = [
     {
       icon: <Layers className="h-10 w-10" />,

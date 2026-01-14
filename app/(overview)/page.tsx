@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ArrowRight, Play } from "lucide-react"
 import AnimatedHero from "@/components/animated-hero"
-import WaterDivider from "@/components/water-divider"
+// import WaterDivider from "@/components/water-divider"
 import PortfolioGrid from "@/components/portfolio-grid"
 import ServicesSection from "@/components/services-section"
 import ContactSection from "@/components/contact-section"
