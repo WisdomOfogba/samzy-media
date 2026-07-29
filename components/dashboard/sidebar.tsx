@@ -13,11 +13,6 @@ const navItems = [
     href: "/dashboard",
     icon: <LayoutDashboard className="size-4" />,
   },
-  {
-    label: "Settings",
-    href: "/dashboard/#settings",
-    icon: <Settings2 className="size-4" />,
-  },
 ];
 
 export function Sidebar() {
@@ -80,8 +75,8 @@ export function Sidebar() {
       </aside>
       <div onClick={() => {
         setIsOpen(!isOpen);
-      }} className="fixed sm:hidden top-2 z-20 right-2 p-2 rounded-full bg-white cursor-pointer">
-        <Menu className="text-black" />
+      }} className="fixed sm:hidden top-2 z-20 right-6 p-2 rounded-md cursor-pointer">
+        <Menu className="text-white" />
       </div>
     </>
   );

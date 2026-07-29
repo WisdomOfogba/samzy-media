@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
         <p>${formData.message}</p>
 
         <div class="footer">
-        &copy; 2025 Your Company. All rights reserved.
+        &copy; 2026 Your Company. All rights reserved.
         </div>
     </div>
     </body>

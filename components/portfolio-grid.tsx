@@ -7,6 +7,8 @@ import { Play, X } from "lucide-react";
 import { MediaItem } from "@/lib/data";
 import { useProjects } from "@/context/ProjectsContext";
 import { PortfolioSkeleton } from "./Loader";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
 
 interface PortfolioGridProps {
   featured?: boolean;
@@ -29,7 +31,7 @@ export default function PortfolioGrid({
     if (featured) filteredItems = filteredItems.filter((item) => item.featured);
     if (selectedCategory)
       filteredItems = filteredItems.filter(
-        (item) => item.category === selectedCategory
+        (item) => item.category === selectedCategory,
       );
     if (limit) filteredItems = filteredItems.slice(0, limit);
 
@@ -43,53 +45,61 @@ export default function PortfolioGrid({
   return (
     <>
       {/* Pinterest-style Masonry Layout */}
-      <motion.div
-        className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        {items.map((portfolioItem, index) => (
-          <motion.div
-            key={index}
-            className="relative mb-5 break-inside-avoid rounded-xl overflow-hidden cursor-pointer group"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setSelectedItem(portfolioItem)}
-          >
-            <Image
-              src={portfolioItem.thumbnail || "/placeholder.jpg"}
-              alt={portfolioItem.title}
-              width={800}
-              height={600}
-              className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-            />
+      {items.length > 0 ? (
+        <motion.div
+          className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          {items.map((portfolioItem, index) => (
+            <motion.div
+              key={index}
+              className="relative mb-5 break-inside-avoid rounded-xl overflow-hidden cursor-pointer group"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setSelectedItem(portfolioItem)}
+            >
+              <Image
+                src={portfolioItem.thumbnail || "/placeholder.jpg"}
+                alt={portfolioItem.title}
+                width={800}
+                height={600}
+                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
+              />
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 sm:p-6">
-              <div className="text-[10px] sm:text-xs font-medium text-purple-400 uppercase tracking-wider mb-1">
-                {portfolioItem.category}
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4 sm:p-6">
+                <div className="text-[10px] sm:text-xs font-medium text-purple-400 uppercase tracking-wider mb-1">
+                  {portfolioItem.category}
+                </div>
+                <h3 className="text-base sm:text-lg font-semibold text-white line-clamp-1">
+                  {portfolioItem.title}
+                </h3>
+
+                {/* Play Icon for Video */}
+                {portfolioItem.type === "video" && (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedItem(portfolioItem);
+                    }}
+                    className="mt-3 h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
+                  >
+                    <Play className="h-5 w-5 text-white" />
+                  </button>
+                )}
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-white line-clamp-1">
-                {portfolioItem.title}
-              </h3>
-
-              {/* Play Icon for Video */}
-              {portfolioItem.type === "video" && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedItem(portfolioItem);
-                  }}
-                  className="mt-3 h-9 w-9 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-colors"
-                >
-                  <Play className="h-5 w-5 text-white" />
-                </button>
-              )}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <Card className="border-dashed">
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <p className="text-muted-foreground mb-4">No portfolio works yet</p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Modal for Preview */}
       <AnimatePresence>

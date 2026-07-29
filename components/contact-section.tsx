@@ -17,7 +17,7 @@ export default function ContactSection() {
     subject: "",
     message: "",
   })
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "test@gmail.com"
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "ssylvanus89@gmail.com"
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
