@@ -17,7 +17,6 @@ export default function ContactSection() {
     subject: "",
     message: "",
   })
-  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "ssylvanus89@gmail.com"
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormState({
@@ -32,19 +31,18 @@ export default function ContactSection() {
       setIsLoading(true)
 
       if (!formState.name || !formState.email || !formState.subject || !formState.message) {
-        console.log("Fill required fields")
-        alert("Fill required fields")
+        alert("Please fill in all required fields")
         return
       }
 
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({to: ADMIN_EMAIL, subject: "New Message from Samzy media Website", formData: formState}),
+        body: JSON.stringify(formState),
       });
       const data = await res.json();
       if (res.ok) {
-        alert(data.message);
+        alert(data.message || "Message sent successfully!");
         setFormState({ name: "", email: "", subject: "", message: "" });
       } else {
         alert(data.error || "Something went wrong");
@@ -232,7 +230,7 @@ export default function ContactSection() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r  from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987] "
+                className="w-full bg-gradient-to-r from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987]"
               >
                 {isLoading ? "Loading..." : "Send Message"}
                 <Send className="ml-2 h-4 w-4" />

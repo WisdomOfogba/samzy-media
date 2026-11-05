@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 import { verifyAuth } from "@/lib/auth"
 import { connectDB } from "@/lib/mongodb"
 import { PortfolioWork } from "@/models/Work"
+import { workValidationSchema } from "@/lib/validations"
 
 export async function GET(request: NextRequest) {
   try {
-
     await connectDB()
     const works = await PortfolioWork.find().sort({ createdAt: -1 })
 
@@ -21,20 +21,31 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const auth = verifyAuth(request)
+    const auth = await verifyAuth(request)
     if (!auth) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { title, mediaUrl, category, type, featured } = await request.json();
-    if (!title || !mediaUrl || !category || !type) {
-      return NextResponse.json({ error: "Missing required files!"}, { status: 400 })
+    const body = await request.json()
+    const validation = workValidationSchema.safeParse(body)
+
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: validation.error.flatten().fieldErrors },
+        { status: 400 }
+      )
     }
 
-    const thumbnail = mediaUrl.replace(/\.(mp4|mov|webm)$/i, ".jpg")
+    const validatedData = validation.data
+    const thumbnail =
+      validatedData.thumbnail ||
+      validatedData.mediaUrl.replace(/\.(mp4|mov|webm)$/i, ".jpg")
 
     await connectDB()
-    const newWork = await PortfolioWork.create({ title, mediaUrl, thumbnail, category, type, featured })
+    const newWork = await PortfolioWork.create({
+      ...validatedData,
+      thumbnail,
+    })
 
     return NextResponse.json(newWork, { status: 201 })
   } catch (error) {

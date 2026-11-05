@@ -17,6 +17,7 @@ interface PortfolioWork {
   category: string
   type: "image" | "video"
   featured: boolean
+  story?: string
 }
 
 export default function DashboardPage() {

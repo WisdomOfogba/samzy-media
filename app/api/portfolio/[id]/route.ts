@@ -2,6 +2,7 @@ import { type NextRequest, NextResponse } from "next/server"
 import { verifyAuth } from "@/lib/auth"
 import { connectDB } from "@/lib/mongodb"
 import { PortfolioWork } from "@/models/Work"
+import { workValidationSchema } from "@/lib/validations"
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -34,19 +35,33 @@ export async function GET(request: NextRequest, { params }: Params) {
  */
 export async function PUT(request: NextRequest, { params }: Params) {
   try {
-    const auth = verifyAuth(request)
+    const auth = await verifyAuth(request)
     if (!auth) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     const body = await request.json()
-    await connectDB()
+    const { _id, __v, createdAt, updatedAt, ...payload } = body
 
+    const validation = workValidationSchema.partial().safeParse(payload)
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: "Validation failed", details: validation.error.flatten().fieldErrors },
+        { status: 400 }
+      )
+    }
+
+    const sanitizedData = validation.data
+    if (sanitizedData.mediaUrl && !sanitizedData.thumbnail) {
+      sanitizedData.thumbnail = sanitizedData.mediaUrl.replace(/\.(mp4|mov|webm)$/i, ".jpg")
+    }
+
+    await connectDB()
     const { id } = await params
 
     const updatedWork = await PortfolioWork.findByIdAndUpdate(
       id,
-      body,
+      sanitizedData,
       {
         new: true,         // return updated doc
         runValidators: true,
@@ -72,7 +87,7 @@ export async function PUT(request: NextRequest, { params }: Params) {
  */
 export async function DELETE(request: NextRequest, { params }: Params) {
   try {
-    const auth = verifyAuth(request)
+    const auth = await verifyAuth(request)
     if (!auth) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }

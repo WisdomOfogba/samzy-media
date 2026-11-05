@@ -1,8 +1,6 @@
 import { cookies } from "next/headers"
 import { type NextRequest, NextResponse } from "next/server"
-
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@example.com"
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123"
+import { signAuthToken } from "@/lib/auth"
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,14 +10,27 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      const sessionToken = crypto.randomUUID() 
+    const adminEmail = process.env.ADMIN_EMAIL
+    const adminPassword = process.env.ADMIN_PASSWORD
+    const authSecret = process.env.AUTH_SECRET
+
+    if (!adminEmail || !adminPassword || !authSecret) {
+      console.error("Missing required authentication environment variables (ADMIN_EMAIL, ADMIN_PASSWORD, or AUTH_SECRET).")
+      return NextResponse.json(
+        { error: "Authentication service is not properly configured on the server." },
+        { status: 500 }
+      )
+    }
+
+    if (email === adminEmail && password === adminPassword) {
+      const sessionToken = await signAuthToken({ email })
       const cookieStore = await cookies()
       cookieStore.set("auth-token", sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: "/",
       })
 
       return NextResponse.json({ success: true })
@@ -27,6 +38,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
   } catch (error) {
+    console.error("Login error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

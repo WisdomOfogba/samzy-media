@@ -1,184 +1,95 @@
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import { motion } from "framer-motion"
-import { ArrowDown } from "lucide-react"
-import { useRouter } from "next/navigation"
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight, Sparkles, Film, ArrowDown } from "lucide-react";
 
 export default function AnimatedHero() {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const routre = useRouter()
-
-  useEffect(() => {
-    if (!canvasRef.current) return
-
-    const canvas = canvasRef.current
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    let animationFrameId: number
-    let particles: Particle[] = []
-
-    class Particle {
-      x: number
-      y: number
-      size: number
-      speedX: number
-      speedY: number
-      color: string
-
-      constructor() {
-        this.x = Math.random() * canvas.width
-        this.y = Math.random() * canvas.height
-        this.size = Math.random() * 5 + 1
-        this.speedX = Math.random() * 3 - 1.5
-        this.speedY = Math.random() * 3 - 1.5
-        this.color = `rgba(${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 100 + 155)}, ${Math.floor(Math.random() * 255)}, ${Math.random() * 0.5 + 0.2})`
-      }
-
-      update() {
-        this.x += this.speedX
-        this.y += this.speedY
-
-        if (this.x > canvas.width) this.x = 0
-        else if (this.x < 0) this.x = canvas.width
-
-        if (this.y > canvas.height) this.y = 0
-        else if (this.y < 0) this.y = canvas.height
-      }
-
-      draw() {
-        if (!ctx) return
-        ctx.fillStyle = this.color
-        ctx.beginPath()
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2)
-        ctx.fill()
-      }
-    }
-
-    // Set canvas dimensions
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-      initParticles()
-    }
-
-    window.addEventListener("resize", resizeCanvas)
-    resizeCanvas()
-
-    function initParticles() {
-      particles = []
-      const numberOfParticles = Math.floor((canvas.width * canvas.height) / 15000)
-
-      for (let i = 0; i < numberOfParticles; i++) {
-        particles.push(new Particle())
-      }
-    }
-
-    function connectParticles() {
-      if (!ctx) return
-      const maxDistance = 150
-
-      for (let a = 0; a < particles.length; a++) {
-        for (let b = a; b < particles.length; b++) {
-          const dx = particles[a].x - particles[b].x
-          const dy = particles[a].y - particles[b].y
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < maxDistance) {
-            const opacity = 1 - distance / maxDistance
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.2})`
-            ctx.lineWidth = 1
-            ctx.beginPath()
-            ctx.moveTo(particles[a].x, particles[a].y)
-            ctx.lineTo(particles[b].x, particles[b].y)
-            ctx.stroke()
-          }
-        }
-      }
-    }
-
-    function animate() {
-      if (!ctx) return
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      for (let i = 0; i < particles.length; i++) {
-        particles[i].update()
-        particles[i].draw()
-      }
-
-      connectParticles()
-      animationFrameId = requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    return () => {
-      window.removeEventListener("resize", resizeCanvas)
-      cancelAnimationFrame(animationFrameId)
-    }
-  }, [])
-
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black">
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+    <section className="relative w-full min-h-[92vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-black bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-zinc-800 via-zinc-950 to-black text-white px-4 md:px-8">
+      {/* Ambient background glow accents */}
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-purple-900/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-pink-900/15 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-4 text-center">
-        <motion.h1
-          className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
+      {/* Hero Content */}
+      <div className="relative z-10 max-w-5xl mx-auto text-center flex flex-col items-center pt-24 pb-16">
+        {/* Eyebrow badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs md:text-sm font-medium text-zinc-300 mb-8 backdrop-blur-md shadow-inner"
         >
-          <span className="block">Crafting</span>
-          <span className="text-transparent bg-transparent bg-clip-text bg-gradient-to-r from-[#da373c] to-[#fea85b]">
-            Visual Worlds
+          <Sparkles className="h-3.5 w-3.5 text-purple-400" />
+          <span>Cinematic Media Production & Motion Design</span>
+        </motion.div>
+
+        {/* Main Heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.15, ease: "easeOut" }}
+          className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-white mb-6 leading-[1.08]"
+        >
+          Visual Storytelling &{" "}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300">
+            Motion Design
           </span>
         </motion.h1>
 
+        {/* Subtitle */}
         <motion.p
-          className="text-xl md:text-2xl max-w-2xl mb-10 text-gray-300"
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+          className="text-lg md:text-2xl text-zinc-400 max-w-2xl mb-10 leading-relaxed font-normal"
         >
-          We create captivating visual experiences through motion, design, and sound
+          We craft captivating visual worlds, character animations, dynamic brand identities, and live streaming productions that leave lasting impressions.
         </motion.p>
 
+        {/* Action Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex flex-col w-full sm:w-max sm:flex-row gap-4"
+          transition={{ duration: 0.7, delay: 0.45, ease: "easeOut" }}
+          className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
         >
-          <a
-            href="#services"
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#5c0987] to-[#c228e3] text-white font-medium hover:from-[#c228e3] hover:to-[#5c0987] transition-colors"
-          >
-            Explore Our Services
-          </a>
-          <a
+          <Link
             href="/portfolio"
-            className="px-8 py-4 rounded-full bg-gradient-to-r from-[#da373c] to-[#fea85b] text-white font-medium  hover:from-[#fea85b] hover:to-[#da373c] transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-white bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all shadow-xl shadow-purple-900/30 hover:scale-[1.02]"
           >
-            View Portfolio
-          </a>
+            <span>View Portfolio</span>
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/live"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full font-semibold text-zinc-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all hover:scale-[1.02]"
+          >
+            <Film className="h-4 w-4 text-purple-400" />
+            <span>Live Broadcasts</span>
+          </Link>
         </motion.div>
       </div>
 
+      {/* Scroll indicator */}
       <motion.div
-      onClick={() => {
-          routre.push("/#services")
-        }}
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10 cursor-pointer"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
+        transition={{ delay: 1, duration: 0.8 }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-zinc-500 hover:text-zinc-300 transition-colors cursor-pointer"
+        onClick={() => {
+          const el = document.getElementById("services");
+          el?.scrollIntoView({ behavior: "smooth" });
+        }}
       >
-        <motion.div  animate={{ y: [0, 10, 0] }} transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}>
-          <ArrowDown className="h-8 w-8 text-white/70" />
+        <span className="text-[11px] uppercase tracking-widest font-medium">Scroll</span>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
+        >
+          <ArrowDown className="h-4 w-4" />
         </motion.div>
       </motion.div>
     </section>
-  )
+  );
 }

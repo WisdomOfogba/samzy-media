@@ -3,7 +3,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react"
 
 interface Project {
-  id: string
+  _id?: string
+  id?: string
   title: string
   mediaUrl: string
   thumbnail: string
@@ -27,11 +28,20 @@ export const ProjectsProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await fetch("/api/portfolio") // Your API endpoint
+        const res = await fetch("/api/portfolio")
+        if (!res.ok) {
+          throw new Error(`Failed to fetch projects: ${res.status} ${res.statusText}`)
+        }
         const data = await res.json()
-        setProjects(data)
+        if (Array.isArray(data)) {
+          setProjects(data)
+        } else {
+          console.error("Malformed projects data received (expected array):", data)
+          setProjects([])
+        }
       } catch (error) {
         console.error("Failed to fetch projects:", error)
+        setProjects([])
       } finally {
         setLoading(false)
       }

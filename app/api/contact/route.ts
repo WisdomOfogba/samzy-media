@@ -1,11 +1,41 @@
-// app/api/contact/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { z } from "zod";
+import { contactValidationSchema } from "@/lib/validations";
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 export async function POST(req: NextRequest) {
-  const { to, subject, formData }: { to: string; subject: string; formData: { name: string, email: string, subject: string, message: string}} = await req.json();
-
   try {
+    const body = await req.json();
+    const rawData = body && typeof body === "object" && "formData" in body ? body.formData : body;
+
+    const validatedData = contactValidationSchema.parse(rawData);
+
+    const recipient = process.env.ADMIN_EMAIL;
+    if (!recipient) {
+      console.error("ADMIN_EMAIL environment variable is not defined");
+      return NextResponse.json(
+        { error: "Contact service is not configured on the server." },
+        { status: 500 }
+      );
+    }
+
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+      console.error("SMTP_USER or SMTP_PASS environment variables are not defined");
+      return NextResponse.json(
+        { error: "Email delivery service is not configured." },
+        { status: 500 }
+      );
+    }
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -14,10 +44,16 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    const safeName = escapeHtml(validatedData.name);
+    const safeEmail = escapeHtml(validatedData.email);
+    const safeSubject = escapeHtml(validatedData.subject);
+    const safeMessage = escapeHtml(validatedData.message).replace(/\n/g, "<br/>");
+
     await transporter.sendMail({
       from: `"Samzy Media Contact App" <${process.env.SMTP_USER}>`,
-      to,
-      subject,
+      to: recipient,
+      replyTo: validatedData.email,
+      subject: `New Contact Form Submission: ${safeSubject}`,
       html: `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -73,19 +109,19 @@ export async function POST(req: NextRequest) {
         <p>You've received a new message via your contact form.</p>
 
         <div class="label">Name:</div>
-        <p>${formData.name}</p>
+        <p>${safeName}</p>
 
         <div class="label">Email:</div>
-        <p>${formData.email}</p>
+        <p>${safeEmail}</p>
 
         <div class="label">Subject:</div>
-        <p>${formData.subject}</p>
+        <p>${safeSubject}</p>
 
         <div class="label">Message:</div>
-        <p>${formData.message}</p>
+        <p>${safeMessage}</p>
 
         <div class="footer">
-        &copy; 2026 Your Company. All rights reserved.
+        &copy; ${new Date().getFullYear()} Samzy Media. All rights reserved.
         </div>
     </div>
     </body>
@@ -95,7 +131,13 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Email sent successfully!" });
   } catch (error) {
-    console.error(error);
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Validation failed", details: error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
+    console.error("Contact API error:", error);
     return NextResponse.json({ error: "Failed to send email." }, { status: 500 });
   }
 }

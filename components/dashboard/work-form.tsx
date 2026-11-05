@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { CloudinaryUpload } from "@/components/dashboard/cloudinary-upload"
 import { LoadingSpinner } from "@/components/dashboard/loading-spinner"
+import { workValidationSchema } from "@/lib/validations"
 
 interface WorkFormData {
   title: string
@@ -16,6 +17,7 @@ interface WorkFormData {
   type: "image" | "video"
   mediaUrl: string
   featured: boolean
+  story?: string
 }
 
 interface WorkFormProps {
@@ -33,6 +35,7 @@ export function WorkForm({ workId }: WorkFormProps) {
     type: "image",
     mediaUrl: "",
     featured: false,
+    story: "",
   })
 
   useEffect(() => {
@@ -46,7 +49,14 @@ export function WorkForm({ workId }: WorkFormProps) {
       const response = await fetch(`/api/portfolio/${id}`)
       if (!response.ok) throw new Error("Failed to fetch work")
       const work = await response.json()
-      setFormData(work)
+      setFormData({
+        title: work.title || "",
+        category: work.category || "Animations",
+        type: work.type || "image",
+        mediaUrl: work.mediaUrl || "",
+        featured: !!work.featured,
+        story: work.story || "",
+      })
     } catch (err) {
       setError("Failed to load work")
     } finally {
@@ -59,8 +69,11 @@ export function WorkForm({ workId }: WorkFormProps) {
     setError("")
     setSaving(true)
 
-    if (!formData.title || !formData.mediaUrl) {
-      setError("Please fill in all required fields and upload media")
+    // Validate using Zod schema to mirror backend validation
+    const validation = workValidationSchema.safeParse(formData)
+    if (!validation.success) {
+      const firstError = Object.values(validation.error.flatten().fieldErrors).flat()[0]
+      setError(firstError || "Please check the form for errors")
       setSaving(false)
       return
     }
@@ -72,14 +85,18 @@ export function WorkForm({ workId }: WorkFormProps) {
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(validation.data),
       })
 
-      if (!response.ok) throw new Error("Failed to save work")
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || "Failed to save work")
+      }
 
       router.push("/dashboard")
+      router.refresh()
     } catch (err) {
-      setError("Failed to save work")
+      setError(err instanceof Error ? err.message : "Failed to save work")
     } finally {
       setSaving(false)
     }
@@ -102,11 +119,11 @@ export function WorkForm({ workId }: WorkFormProps) {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column - Description */}
+        {/* Left Column - Description & Case Study */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Description</CardTitle>
+              <CardTitle>Project Details</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -123,7 +140,17 @@ export function WorkForm({ workId }: WorkFormProps) {
                 <label className="block text-sm font-medium">Category *</label>
                 <select
                   value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value as "Animations" | "Birthday Designs" | "Graphics Design" | "Logo Montage" | "Motion Graphics" })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      category: e.target.value as
+                        | "Animations"
+                        | "Birthday Designs"
+                        | "Graphics Design"
+                        | "Logo Montage"
+                        | "Motion Graphics",
+                    })
+                  }
                   className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground"
                   required
                   disabled={saving}
@@ -167,6 +194,20 @@ export function WorkForm({ workId }: WorkFormProps) {
                 <label htmlFor="featured" className="text-sm font-medium">
                   Featured Work
                 </label>
+              </div>
+
+              {/* Case Study / Story field */}
+              <div className="space-y-2 pt-2 border-t border-border">
+                <label className="block text-sm font-medium">Case Study Story</label>
+                {/* // TODO: Replace with TipTap/Rich Text Editor */}
+                <textarea
+                  value={formData.story || ""}
+                  onChange={(e) => setFormData({ ...formData, story: e.target.value })}
+                  placeholder="Write the story, creative direction, and production details behind this work..."
+                  rows={6}
+                  className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                  disabled={saving}
+                />
               </div>
             </CardContent>
           </Card>

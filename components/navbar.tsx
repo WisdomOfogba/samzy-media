@@ -2,162 +2,159 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Radio } from "lucide-react";
 import Image from "next/image";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  const navLinks = [
+    { label: "Home", href: "/" },
+    { label: "Portfolio", href: "/portfolio" },
+    {
+      label: "Live Stream",
+      href: "/live",
+      badge: (
+        <span className="flex h-2 w-2 relative">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
+        </span>
+      ),
+    },
+    { label: "Services", href: "/#services" },
+  ];
+
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 py-4 px-4 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-black/80 backdrop-blur-md"
-            : "bg-transparent"
+            ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/10 py-3 shadow-2xl"
+            : "bg-transparent py-5"
         }`}
       >
-        <motion.div
-          className="max-w-6xl mx-auto flex items-center justify-between"
-          initial={{ opacity: 0, y: "-100%" }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: "-100%" }}
-          transition={{ duration: 0.3 }}
-        >
-          <Link href="/" className="text-white font-bold text-2xl">
+        <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2 group">
             <Image
               src="/logo-icon.png"
-              alt="Samzy media production logo"
+              alt="Samzy Media Production"
               width={200}
               height={150}
-              className="w-16"
+              className="w-12 h-auto object-contain transition-transform group-hover:scale-105"
+              priority
             />
+            <span className="text-white font-bold text-xl tracking-tight hidden sm:inline-block">
+              Samzy<span className="text-purple-400">Media</span>
+            </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-white hover:text-purple-400 transition-colors"
-            >
-              Home
-            </Link>
-            <Link
-              href="/portfolio"
-              className="text-white hover:text-purple-400 transition-colors"
-            >
-              Portfolio
-            </Link>
-            {/* <Link
-              href="/live-streaming"
-              className="text-white hover:text-purple-400 transition-colors"
-            >
-              Live Streaming
-            </Link> */}
-            <Link
-              href="/#services"
-              className="text-white hover:text-purple-400 transition-colors"
-            >
-              Services
-            </Link>
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-7">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                    isActive
+                      ? "text-purple-400 font-semibold"
+                      : "text-zinc-300 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                  {link.badge}
+                </Link>
+              );
+            })}
             <Link
               href="/#contact"
-              className="px-6 py-2 rounded-full bg-gradient-to-r  from-[#5c0987] to-[#c228e3] hover:from-[#c228e3] hover:to-[#5c0987]  text-white font-mediumtransition-colors"
+              className="px-5 py-2 rounded-full text-sm font-medium text-white bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-600 hover:to-pink-500 transition-all shadow-md hover:shadow-purple-900/30"
             >
               Contact Us
             </Link>
           </nav>
 
+          {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-white"
+            className="md:hidden text-zinc-300 hover:text-white p-2 rounded-lg focus:outline-none"
             onClick={() => setIsMobileMenuOpen(true)}
+            aria-label="Open mobile menu"
           >
             <Menu className="h-6 w-6" />
           </button>
-        </motion.div>
+        </div>
       </header>
 
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-black z-50 flex flex-col"
+            className="fixed inset-0 bg-black/95 z-50 flex flex-col p-6 backdrop-blur-xl md:hidden"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <div className="flex justify-between items-center p-4 border-b border-white/10">
-              <Link
-                href="/"
-                className="text-white font-bold text-2xl"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
+            <div className="flex justify-between items-center pb-6 border-b border-white/10">
+              <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/logo-icon.png"
-                  alt="Samzy media production logo"
+                  alt="Samzy Media Production"
                   width={200}
                   height={150}
-                  className="w-16"
+                  className="w-10 h-auto"
                 />
+                <span className="text-white font-bold text-lg">SamzyMedia</span>
               </Link>
               <button
-                className="text-white"
+                className="text-zinc-400 hover:text-white p-2 rounded-full bg-white/5"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Close mobile menu"
               >
                 <X className="h-6 w-6" />
               </button>
             </div>
 
-            <nav className="flex flex-col p-6 gap-6">
-              <Link
-                href="/"
-                className="text-white text-2xl font-medium hover:text-purple-400 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                href="/portfolio"
-                className="text-white text-2xl font-medium hover:text-purple-400 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Portfolio
-              </Link>
-              {/* <Link
-                href="/live-streaming"
-                className="text-white text-2xl font-medium hover:text-purple-400 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Live Streaming
-              </Link> */}
-              <Link
-                href="/#services"
-                className="text-white text-2xl font-medium hover:text-purple-400 transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Services
-              </Link>
-              <Link
-                href="/#contact"
-                className="px-6 py-3 rounded-full bg-gradient-to-r from-[#5c0987] to-[#c228e3] hover:from-[#c228e3] hover:to-[#5c0987] text-white font-medium transition-colors text-center"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Contact Us
-              </Link>
+            <nav className="flex flex-col gap-5 pt-8">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-2xl font-semibold text-zinc-200 hover:text-purple-400 transition-colors flex items-center justify-between"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span>{link.label}</span>
+                  {link.badge}
+                </Link>
+              ))}
+              <div className="pt-6">
+                <Link
+                  href="/#contact"
+                  className="block w-full py-3.5 text-center rounded-xl font-medium text-white bg-gradient-to-r from-purple-700 to-pink-600 shadow-lg"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contact Us
+                </Link>
+              </div>
             </nav>
           </motion.div>
         )}
