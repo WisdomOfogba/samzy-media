@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
 interface StickyVideoPlayerProps {
@@ -21,9 +22,13 @@ export function StickyVideoPlayer({
   className = "",
 }: StickyVideoPlayerProps) {
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const mainVideoRef = useRef<HTMLVideoElement>(null);
+  const pipVideoRef = useRef<HTMLVideoElement>(null);
+
   const [isSticky, setIsSticky] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
 
+  // Monitor when the main video scrolls out of the viewport
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel) return;
@@ -32,14 +37,15 @@ export function StickyVideoPlayer({
       ([entry]) => {
         const outOfView = !entry.isIntersecting;
         setIsSticky(outOfView);
-        // Reset dismissal when user scrolls back to the top/hero video
+
+        // Reset dismissal when user scrolls back to the main video
         if (!outOfView) {
           setIsDismissed(false);
         }
       },
       {
         root: null,
-        threshold: 0.1,
+        threshold: 0.15,
       }
     );
 
@@ -50,55 +56,83 @@ export function StickyVideoPlayer({
     };
   }, []);
 
+  // Sync playback time between main video and floating PiP
+  useEffect(() => {
+    if (isSticky && !isDismissed && pipVideoRef.current && mainVideoRef.current) {
+      pipVideoRef.current.currentTime = mainVideoRef.current.currentTime;
+      if (!mainVideoRef.current.paused) {
+        pipVideoRef.current.play().catch(() => {});
+        mainVideoRef.current.pause();
+      }
+    } else if (!isSticky && mainVideoRef.current && pipVideoRef.current) {
+      mainVideoRef.current.currentTime = pipVideoRef.current.currentTime;
+      if (!pipVideoRef.current.paused) {
+        mainVideoRef.current.play().catch(() => {});
+      }
+    }
+  }, [isSticky, isDismissed]);
+
   return (
     <div className={`relative w-full ${className}`}>
-      {/* Sentinel container reserving exact aspect-ratio space in the document flow */}
+      {/* 1. Main Hero Video: Stays permanently anchored in the document flow */}
       <div
         ref={sentinelRef}
-        className="relative w-full aspect-video rounded-sm overflow-hidden bg-zinc-950 border border-zinc-800"
+        className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/10 shadow-2xl"
       >
-        {/*
-          CRITICAL FIX: The <video> element remains PERMANENTLY mounted.
-          CSS class toggling moves the exact same element to the corner when scrolled out of view.
-        */}
-        <div
-          className={`transition-all duration-300 ease-in-out ${
-            isSticky
-              ? isDismissed
-                ? "hidden"
-                : "fixed bottom-6 right-6 w-72 md:w-96 aspect-video z-50 shadow-2xl border border-zinc-800 bg-black rounded-sm overflow-hidden group"
-              : "relative w-full h-full"
-          }`}
+        <video
+          ref={mainVideoRef}
+          src={src}
+          poster={poster}
+          controls={controls}
+          autoPlay={autoPlay}
+          playsInline
+          disablePictureInPicture
+          className="w-full h-full object-contain bg-black"
         >
-          {isSticky && !isDismissed && (
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      {/* 2. Floating PiP: Smoothly slides in from the right when scrolled past the sentinel */}
+      <AnimatePresence>
+        {isSticky && !isDismissed && (
+          <motion.div
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: "100%", opacity: 0 }}
+            transition={{ type: "spring", damping: 26, stiffness: 240 }}
+            className="fixed bottom-6 right-6 w-72 sm:w-80 md:w-96 aspect-video z-50 rounded-2xl shadow-2xl shadow-purple-950/40 overflow-hidden border border-white/20 bg-black/90 backdrop-blur-xl group"
+          >
+            {/* Close / Dismiss PiP button */}
             <button
               onClick={() => setIsDismissed(true)}
-              className="absolute top-2 right-2 z-20 p-1 bg-black/80 hover:bg-black text-zinc-300 hover:text-white border border-zinc-700/60 rounded-none transition-colors"
-              aria-label="Close floating video"
+              className="absolute top-2.5 right-2.5 z-20 p-1.5 rounded-full bg-black/70 hover:bg-black text-zinc-300 hover:text-white transition-colors border border-white/10 backdrop-blur-md"
+              aria-label="Close Picture in Picture"
             >
               <X className="w-3.5 h-3.5" />
             </button>
-          )}
 
-          <video
-            src={src}
-            poster={poster}
-            controls={controls}
-            autoPlay={autoPlay}
-            playsInline
-            disablePictureInPicture
-            className="w-full h-full object-contain bg-black"
-          >
-            Your browser does not support the video tag.
-          </video>
+            <video
+              ref={pipVideoRef}
+              src={src}
+              poster={poster}
+              controls={controls}
+              autoPlay
+              playsInline
+              disablePictureInPicture
+              className="w-full h-full object-contain bg-black"
+            >
+              Your browser does not support the video tag.
+            </video>
 
-          {isSticky && !isDismissed && title && (
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-2 text-[11px] font-mono text-zinc-300 truncate pointer-events-none">
-              {title}
-            </div>
-          )}
-        </div>
-      </div>
+            {title && (
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-2 text-xs font-medium text-white truncate pointer-events-none">
+                {title}
+              </div>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

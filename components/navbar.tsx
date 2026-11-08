@@ -46,7 +46,7 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800/80 py-3 shadow-2xl"
+            ? "bg-black/80 backdrop-blur-xl border-b border-white/10 py-3.5 shadow-2xl shadow-purple-950/20"
             : "bg-transparent py-5"
         }`}
       >
@@ -60,8 +60,8 @@ export default function Navbar() {
               className="w-10 h-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-            <span className="text-white font-bold text-lg tracking-tight uppercase font-heading">
-              Samzy<span className="text-zinc-500">Media</span>
+            <span className="text-white font-bold text-xl tracking-tight hidden sm:inline-block font-heading">
+              Samzy<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Media</span>
             </span>
           </Link>
 
@@ -73,28 +73,28 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-xs uppercase tracking-wider font-mono transition-colors flex items-center gap-1.5 ${
+                  className={`text-sm font-medium transition-colors flex items-center gap-2 ${
                     isActive
-                      ? "text-white font-semibold border-b-2 border-white pb-0.5"
-                      : "text-zinc-400 hover:text-white"
+                      ? "text-purple-300 font-semibold"
+                      : "text-zinc-300 hover:text-white"
                   }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
                   {link.badge}
                 </Link>
               );
             })}
             <Link
               href="/#contact"
-              className="px-5 py-2 rounded-none text-xs uppercase tracking-widest font-mono text-black bg-white hover:bg-zinc-200 transition-colors border border-white"
+              className="px-6 py-2.5 rounded-full text-sm font-medium text-white bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all shadow-md shadow-purple-950/40 hover:scale-105"
             >
-              Contact
+              Contact Us
             </Link>
           </nav>
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-zinc-300 hover:text-white p-2 border border-zinc-800 bg-zinc-900 rounded-none focus:outline-none"
+            className="md:hidden text-zinc-300 hover:text-white p-2 rounded-xl bg-white/5 border border-white/10 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open mobile menu"
           >
@@ -107,13 +107,13 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-zinc-950/95 z-50 flex flex-col p-6 backdrop-blur-xl md:hidden border-l border-zinc-800"
+            className="fixed inset-0 bg-black/95 z-50 flex flex-col p-6 backdrop-blur-2xl md:hidden border-l border-white/10"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <div className="flex justify-between items-center pb-6 border-b border-zinc-800">
+            <div className="flex justify-between items-center pb-6 border-b border-white/10">
               <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/logo-icon.png"
@@ -122,10 +122,10 @@ export default function Navbar() {
                   height={150}
                   className="w-10 h-auto"
                 />
-                <span className="text-white font-bold text-lg uppercase font-heading">SamzyMedia</span>
+                <span className="text-white font-bold text-lg font-heading">SamzyMedia</span>
               </Link>
               <button
-                className="text-zinc-400 hover:text-white p-2 rounded-none border border-zinc-800 bg-zinc-900"
+                className="text-zinc-400 hover:text-white p-2 rounded-full bg-white/5 border border-white/10"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Close mobile menu"
               >
@@ -138,7 +138,7 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-2xl font-bold uppercase font-heading text-zinc-200 hover:text-white transition-colors flex items-center justify-between"
+                  className="text-2xl font-bold font-heading text-zinc-200 hover:text-purple-400 transition-colors flex items-center justify-between"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span>{link.label}</span>
@@ -148,7 +148,7 @@ export default function Navbar() {
               <div className="pt-6">
                 <Link
                   href="/#contact"
-                  className="block w-full py-3.5 text-center rounded-none font-mono text-xs uppercase tracking-widest text-black bg-white hover:bg-zinc-200 transition-colors"
+                  className="block w-full py-4 text-center rounded-2xl font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-xl shadow-purple-950/50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Contact Us

@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "framer-motion";
+
 interface PortfolioFilterProps {
   selectedCategory: string | null;
   onSelectCategory: (category: string | null) => void;
@@ -18,27 +20,27 @@ export default function PortfolioFilter({
   ];
 
   return (
-    <div className="mb-10">
+    <div className="mb-12">
       <div className="flex flex-wrap gap-2.5">
         <button
           onClick={() => onSelectCategory(null)}
-          className={`px-4 py-2 rounded-none text-xs font-mono uppercase tracking-widest transition-colors border ${
+          className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
             selectedCategory === null
-              ? "bg-white text-black border-white font-semibold"
-              : "bg-zinc-900 text-zinc-400 hover:text-white border-zinc-800 hover:border-zinc-700"
+              ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-900/30 scale-105"
+              : "bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/10"
           }`}
         >
-          [ All Works ]
+          All Works
         </button>
 
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => onSelectCategory(category.id)}
-            className={`px-4 py-2 rounded-none text-xs font-mono uppercase tracking-widest transition-colors border ${
+            className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all ${
               selectedCategory === category.id
-                ? "bg-white text-black border-white font-semibold"
-                : "bg-zinc-900 text-zinc-400 hover:text-white border-zinc-800 hover:border-zinc-700"
+                ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-900/30 scale-105"
+                : "bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white border border-white/10"
             }`}
           >
             {category.label}

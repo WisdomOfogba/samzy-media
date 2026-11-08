@@ -20,20 +20,20 @@ export function ConfirmDialog({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="w-full max-w-sm bg-zinc-950 border border-zinc-800 p-6 space-y-4 rounded-none shadow-2xl">
-        <h2 className="text-base font-bold font-mono uppercase tracking-wider text-white">
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+      <div className="w-full max-w-md bg-zinc-900/90 border border-white/10 p-6 md:p-8 space-y-4 rounded-3xl shadow-2xl shadow-purple-950/40">
+        <h2 className="text-xl font-bold text-white font-heading">
           {title}
         </h2>
-        <p className="text-xs font-mono text-zinc-400 leading-relaxed">
+        <p className="text-sm text-zinc-300 leading-relaxed">
           {description}
         </p>
-        <div className="flex gap-2.5 justify-end pt-2 border-t border-zinc-800">
+        <div className="flex gap-3 justify-end pt-4 border-t border-white/10">
           <button
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="px-4 py-2 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800 transition-colors rounded-none"
+            className="px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors rounded-full"
           >
             Cancel
           </button>
@@ -41,7 +41,7 @@ export function ConfirmDialog({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className="px-4 py-2 text-xs font-mono uppercase tracking-wider font-semibold text-white bg-red-600 hover:bg-red-500 transition-colors rounded-none border border-red-500 disabled:opacity-50"
+            className="px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 transition-colors rounded-full shadow-lg shadow-red-950/50 disabled:opacity-50"
           >
             {isLoading ? "Deleting..." : "Confirm Delete"}
           </button>

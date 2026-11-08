@@ -59,35 +59,37 @@ export function CloudinaryUpload({
 
   return (
     <div className="space-y-3">
-      <div className="border border-dashed border-zinc-800 bg-zinc-900/40 p-6 text-center rounded-none">
+      <div className="border-2 border-dashed border-purple-500/25 bg-purple-950/10 hover:bg-purple-950/20 p-8 text-center rounded-2xl transition-colors">
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-4 text-xs font-mono text-zinc-400">
+          <div className="flex flex-col items-center justify-center py-4 text-xs font-medium text-purple-300">
             <LoadingSpinner />
-            <span className="mt-2">Uploading asset...</span>
+            <span className="mt-2">Uploading asset to Cloudinary...</span>
           </div>
         ) : currentUrl ? (
           <div className="space-y-3">
-            <p className="text-xs font-mono uppercase tracking-wider text-zinc-400">Current Uploaded Asset:</p>
-            <p className="text-[11px] font-mono text-zinc-500 break-all bg-zinc-950 p-2 border border-zinc-800 rounded-none">
+            <p className="text-xs font-semibold uppercase tracking-wider text-purple-300">Current Uploaded Asset:</p>
+            <p className="text-xs text-zinc-400 break-all bg-black/40 p-3 border border-white/10 rounded-xl">
               {currentUrl}
             </p>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={disabled}
-              className="px-4 py-2 text-xs font-mono uppercase tracking-wider text-zinc-300 hover:text-white bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors rounded-none"
+              className="px-5 py-2 text-xs font-semibold uppercase tracking-wider text-white bg-white/10 hover:bg-white/20 border border-white/10 transition-colors rounded-full"
             >
               Replace Asset
             </button>
           </div>
         ) : (
           <div className="space-y-3">
-            <Upload className="w-6 h-6 text-zinc-600 mx-auto" />
+            <div className="w-12 h-12 rounded-2xl bg-purple-900/40 border border-purple-700/40 flex items-center justify-center mx-auto text-purple-400">
+              <Upload className="w-6 h-6" />
+            </div>
             <div className="space-y-1">
-              <p className="text-xs font-mono uppercase tracking-wider text-zinc-300">
+              <p className="text-sm font-semibold text-zinc-200">
                 Click to select or drag and drop
               </p>
-              <p className="text-[11px] font-mono text-zinc-600">
+              <p className="text-xs text-zinc-400">
                 High definition video (mp4/webm) or image (png/jpg) up to 50MB
               </p>
             </div>
@@ -95,7 +97,7 @@ export function CloudinaryUpload({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={disabled}
-              className="px-4 py-2 text-xs font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 transition-colors rounded-none font-semibold border border-white"
+              className="px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all rounded-full shadow-lg shadow-purple-950/40"
             >
               Choose File
             </button>
@@ -103,7 +105,7 @@ export function CloudinaryUpload({
         )}
       </div>
 
-      {error && <p className="text-xs font-mono text-red-400">{error}</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
 
       <input
         ref={fileInputRef}

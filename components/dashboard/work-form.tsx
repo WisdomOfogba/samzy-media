@@ -108,7 +108,7 @@ export function WorkForm({ workId }: WorkFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-950/20 border border-red-900/50 text-red-400 px-4 py-3 text-xs font-mono rounded-none">
+        <div className="bg-red-950/30 border border-red-800/50 text-red-300 px-4 py-3 text-xs rounded-xl">
           {error}
         </div>
       )}
@@ -116,13 +116,13 @@ export function WorkForm({ workId }: WorkFormProps) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Form Fields */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="bg-zinc-950 border border-zinc-800 p-6 rounded-none space-y-5">
-            <h2 className="text-sm font-mono uppercase tracking-wider font-semibold text-white border-b border-zinc-800 pb-3">
+          <div className="bg-zinc-900/60 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl space-y-6 shadow-xl">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-purple-400 border-b border-white/10 pb-3">
               Project Specification
             </h2>
 
             <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+              <label className="text-xs font-medium text-zinc-300 block">
                 Title *
               </label>
               <input
@@ -132,12 +132,12 @@ export function WorkForm({ workId }: WorkFormProps) {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="e.g. Apex Motion Identity"
                 disabled={saving}
-                className="w-full bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder:text-zinc-600 text-sm px-3.5 py-2.5 rounded-none focus:outline-none focus:border-zinc-500 font-mono"
+                className="w-full bg-zinc-800/50 border border-zinc-700/80 rounded-xl px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+              <label className="text-xs font-medium text-zinc-300 block">
                 Category *
               </label>
               <select
@@ -148,7 +148,7 @@ export function WorkForm({ workId }: WorkFormProps) {
                     category: e.target.value as any,
                   })
                 }
-                className="w-full bg-zinc-900 border border-zinc-800 text-zinc-100 text-sm px-3.5 py-2.5 rounded-none focus:outline-none focus:border-zinc-500 font-mono"
+                className="w-full bg-zinc-800/50 border border-zinc-700/80 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 required
                 disabled={saving}
               >
@@ -161,12 +161,12 @@ export function WorkForm({ workId }: WorkFormProps) {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+              <label className="text-xs font-medium text-zinc-300 block">
                 Media Format *
               </label>
               <div className="flex gap-6 pt-1">
                 {(["image", "video"] as const).map((t) => (
-                  <label key={t} className="flex items-center gap-2 cursor-pointer font-mono text-xs uppercase tracking-wider">
+                  <label key={t} className="flex items-center gap-2 cursor-pointer text-xs font-semibold uppercase tracking-wider">
                     <input
                       type="radio"
                       name="type"
@@ -175,9 +175,9 @@ export function WorkForm({ workId }: WorkFormProps) {
                       checked={formData.type === t}
                       onChange={(e) => setFormData({ ...formData, type: e.target.value as "image" | "video" })}
                       disabled={saving}
-                      className="accent-white"
+                      className="accent-purple-500 w-4 h-4 cursor-pointer"
                     />
-                    <span className="text-zinc-300">{t}</span>
+                    <span className="text-zinc-200 capitalize">{t}</span>
                   </label>
                 ))}
               </div>
@@ -190,16 +190,16 @@ export function WorkForm({ workId }: WorkFormProps) {
                 checked={formData.featured}
                 onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                 disabled={saving}
-                className="w-4 h-4 accent-white rounded-none cursor-pointer"
+                className="w-4 h-4 accent-purple-500 rounded cursor-pointer"
               />
-              <label htmlFor="featured" className="text-xs font-mono uppercase tracking-wider text-zinc-300 cursor-pointer">
-                Pin as Featured Item
+              <label htmlFor="featured" className="text-xs font-medium text-zinc-300 cursor-pointer">
+                Pin as Featured Project (displays prominently on home & portfolio)
               </label>
             </div>
 
-            {/* Case Study / Story textarea */}
-            <div className="space-y-2 pt-4 border-t border-zinc-800">
-              <label className="text-xs font-mono uppercase tracking-wider text-zinc-400 block">
+            {/* Case Study Story */}
+            <div className="space-y-2 pt-4 border-t border-white/10">
+              <label className="text-xs font-medium text-zinc-300 block">
                 Case Study Story (Rich Narrative)
               </label>
               {/* // TODO: Replace with TipTap/Rich Text Editor */}
@@ -208,15 +208,15 @@ export function WorkForm({ workId }: WorkFormProps) {
                 onChange={(e) => setFormData({ ...formData, story: e.target.value })}
                 placeholder="Write the creative direction, concept breakdown, toolchain, and production context for this work..."
                 rows={7}
-                className="w-full bg-zinc-900 border border-zinc-800 text-zinc-100 placeholder:text-zinc-600 text-sm p-3.5 rounded-none focus:outline-none focus:border-zinc-500 font-sans leading-relaxed"
+                className="w-full bg-zinc-800/50 border border-zinc-700/80 rounded-xl p-4 text-sm text-zinc-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all leading-relaxed font-sans"
                 disabled={saving}
               />
             </div>
           </div>
 
           {/* Media Asset Upload */}
-          <div className="bg-zinc-950 border border-zinc-800 p-6 rounded-none space-y-4">
-            <h2 className="text-sm font-mono uppercase tracking-wider font-semibold text-white border-b border-zinc-800 pb-3">
+          <div className="bg-zinc-900/60 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-3xl space-y-4 shadow-xl">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-purple-400 border-b border-white/10 pb-3">
               Media Asset *
             </h2>
             <CloudinaryUpload
@@ -231,16 +231,16 @@ export function WorkForm({ workId }: WorkFormProps) {
 
         {/* Right Column: Asset Preview */}
         <div className="lg:col-span-1 space-y-6">
-          <div className="bg-zinc-950 border border-zinc-800 p-6 rounded-none space-y-4">
-            <h2 className="text-sm font-mono uppercase tracking-wider font-semibold text-white border-b border-zinc-800 pb-3">
+          <div className="bg-zinc-900/60 backdrop-blur-xl border border-white/10 p-6 rounded-3xl space-y-4 shadow-xl">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-purple-400 border-b border-white/10 pb-3">
               Media Preview
             </h2>
             {formData.mediaUrl ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {formData.type === "video" ? (
                   <video
                     src={formData.mediaUrl}
-                    className="w-full aspect-video object-contain bg-black border border-zinc-800 rounded-none"
+                    className="w-full aspect-video object-contain bg-black border border-white/10 rounded-2xl shadow-md"
                     controls
                     disablePictureInPicture
                   />
@@ -248,15 +248,15 @@ export function WorkForm({ workId }: WorkFormProps) {
                   <img
                     src={formData.mediaUrl}
                     alt="Media preview"
-                    className="w-full aspect-video object-contain bg-black border border-zinc-800 rounded-none"
+                    className="w-full aspect-video object-contain bg-black border border-white/10 rounded-2xl shadow-md"
                   />
                 )}
-                <div className="text-[11px] font-mono text-zinc-500 truncate pt-1">
+                <div className="text-xs text-zinc-400 truncate pt-1">
                   {formData.mediaUrl}
                 </div>
               </div>
             ) : (
-              <div className="py-12 text-center text-xs font-mono uppercase tracking-wider text-zinc-600 border border-dashed border-zinc-800">
+              <div className="py-14 text-center text-xs text-zinc-500 border border-dashed border-white/10 rounded-2xl">
                 No media uploaded
               </div>
             )}
@@ -265,19 +265,19 @@ export function WorkForm({ workId }: WorkFormProps) {
       </div>
 
       {/* Action Footer */}
-      <div className="flex gap-3 justify-end pt-4 border-t border-zinc-800">
+      <div className="flex gap-3 justify-end pt-4 border-t border-white/10">
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
           disabled={saving}
-          className="px-5 py-2.5 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors rounded-none"
+          className="px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-colors rounded-full"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={saving}
-          className="px-6 py-2.5 text-xs font-mono uppercase tracking-widest font-semibold text-black bg-white hover:bg-zinc-200 transition-colors rounded-none border border-white disabled:opacity-50"
+          className="px-8 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all rounded-full shadow-lg shadow-purple-950/40 hover:scale-105 disabled:opacity-50"
         >
           {saving ? "Saving..." : workId ? "Update Project" : "Publish Project"}
         </button>

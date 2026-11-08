@@ -5,26 +5,26 @@
 @tailwind utilities;
 
 :root {
-  --background: 240 10% 3.9%;
+  --background: 260 25% 4%;
   --foreground: 0 0% 98%;
-  --card: 240 10% 4.9%;
+  --card: 260 20% 7%;
   --card-foreground: 0 0% 98%;
-  --popover: 240 10% 4.9%;
+  --popover: 260 20% 7%;
   --popover-foreground: 0 0% 98%;
-  --primary: 0 0% 98%;
-  --primary-foreground: 240 5.9% 10%;
-  --secondary: 240 3.7% 15.9%;
+  --primary: 270 95% 65%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 260 15% 15%;
   --secondary-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --accent: 240 3.7% 15.9%;
+  --muted: 260 15% 15%;
+  --muted-foreground: 260 10% 65%;
+  --accent: 270 50% 20%;
   --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  --ring: 240 4.9% 83.9%;
-  --radius: 0.125rem;
+  --border: 260 15% 18%;
+  --input: 260 15% 18%;
+  --ring: 270 95% 65%;
+  --radius: 1rem;
 }
 
 html {
@@ -32,8 +32,9 @@ html {
 }
 
 body {
-  background-color: #09090b;
-  color: #fafafa;
+  background-color: #07050d;
+  color: #f4f4f5;
+  font-feature-settings: "rlig" 1, "calt" 1;
 }
 
 @layer base {
@@ -41,17 +42,17 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-zinc-950 text-zinc-100 font-sans;
+    @apply bg-black text-zinc-100 font-sans;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Clash Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.02em;
   }
 }
 
 @layer utilities {
   .skeleton {
-    @apply relative overflow-hidden bg-zinc-900 rounded-sm;
+    @apply relative overflow-hidden bg-white/5 rounded-2xl;
   }
 
   .skeleton::after {
@@ -63,12 +64,29 @@ body {
       rgba(255, 255, 255, 0.08),
       transparent
     );
-    animation: shimmer 1.4s infinite;
+    animation: shimmer 1.5s infinite;
   }
 
   @keyframes shimmer {
     100% {
       transform: translateX(100%);
     }
+  }
+
+  .glass-card {
+    background: rgba(24, 20, 36, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card-hover:hover {
+    background: rgba(30, 25, 45, 0.75);
+    border-color: rgba(168, 85, 247, 0.3);
+    box-shadow: 0 20px 40px -15px rgba(112, 26, 117, 0.25);
   }
 }
