@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss"
-import animate from 'tailwindcss-animate'
+import animate from "tailwindcss-animate"
 
 const config = {
   darkMode: ["class"],
@@ -20,6 +20,11 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "sans-serif"],
+        clash: ["'Clash Display'", "sans-serif"],
+        heading: ["'Clash Display'", "sans-serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

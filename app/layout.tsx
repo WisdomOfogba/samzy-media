@@ -3,15 +3,18 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
-  title: "Motion Graphics Studio",
-  description: "Specializing in motion graphics, animations, logo animations, media production, and sound management",
-    generator: 'v0.dev'
+  title: "Samzy Media Production | Motion Graphics & Film",
+  description:
+    "Specializing in motion graphics, 2D/3D animations, logo montages, media production, and live broadcast engineering.",
+  generator: "Next.js",
 }
 
 export default function RootLayout({
@@ -20,9 +23,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body className="min-h-screen bg-zinc-950 text-zinc-100 antialiased selection:bg-white selection:text-black">
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} forcedTheme="dark">
           {children}
         </ThemeProvider>
       </body>

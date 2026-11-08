@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Radio } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
 
 export default function Navbar() {
@@ -21,7 +21,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [pathname]);
@@ -47,47 +46,47 @@ export default function Navbar() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? "bg-zinc-950/80 backdrop-blur-md border-b border-white/10 py-3 shadow-2xl"
+            ? "bg-black/80 backdrop-blur-xl border-b border-white/10 py-3.5 shadow-2xl shadow-purple-950/20"
             : "bg-transparent py-5"
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 md:px-8 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-3 group">
             <Image
               src="/logo-icon.png"
               alt="Samzy Media Production"
               width={200}
               height={150}
-              className="w-12 h-auto object-contain transition-transform group-hover:scale-105"
+              className="w-10 h-auto object-contain transition-transform group-hover:scale-105"
               priority
             />
-            <span className="text-white font-bold text-xl tracking-tight hidden sm:inline-block">
-              Samzy<span className="text-purple-400">Media</span>
+            <span className="text-white font-bold text-xl tracking-tight hidden sm:inline-block font-heading">
+              Samzy<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Media</span>
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-7">
+          <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium transition-colors flex items-center gap-1.5 ${
+                  className={`text-sm font-medium transition-colors flex items-center gap-2 ${
                     isActive
-                      ? "text-purple-400 font-semibold"
+                      ? "text-purple-300 font-semibold"
                       : "text-zinc-300 hover:text-white"
                   }`}
                 >
-                  {link.label}
+                  <span>{link.label}</span>
                   {link.badge}
                 </Link>
               );
             })}
             <Link
               href="/#contact"
-              className="px-5 py-2 rounded-full text-sm font-medium text-white bg-gradient-to-r from-purple-700 to-pink-600 hover:from-purple-600 hover:to-pink-500 transition-all shadow-md hover:shadow-purple-900/30"
+              className="px-6 py-2.5 rounded-full text-sm font-medium text-white bg-gradient-to-r from-purple-600 via-purple-700 to-pink-600 hover:from-purple-500 hover:to-pink-500 transition-all shadow-md shadow-purple-950/40 hover:scale-105"
             >
               Contact Us
             </Link>
@@ -95,11 +94,11 @@ export default function Navbar() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden text-zinc-300 hover:text-white p-2 rounded-lg focus:outline-none"
+            className="md:hidden text-zinc-300 hover:text-white p-2 rounded-xl bg-white/5 border border-white/10 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Open mobile menu"
           >
-            <Menu className="h-6 w-6" />
+            <Menu className="h-5 w-5" />
           </button>
         </div>
       </header>
@@ -108,7 +107,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/95 z-50 flex flex-col p-6 backdrop-blur-xl md:hidden"
+            className="fixed inset-0 bg-black/95 z-50 flex flex-col p-6 backdrop-blur-2xl md:hidden border-l border-white/10"
             initial={{ opacity: 0, x: "100%" }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
@@ -123,23 +122,23 @@ export default function Navbar() {
                   height={150}
                   className="w-10 h-auto"
                 />
-                <span className="text-white font-bold text-lg">SamzyMedia</span>
+                <span className="text-white font-bold text-lg font-heading">SamzyMedia</span>
               </Link>
               <button
-                className="text-zinc-400 hover:text-white p-2 rounded-full bg-white/5"
+                className="text-zinc-400 hover:text-white p-2 rounded-full bg-white/5 border border-white/10"
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label="Close mobile menu"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               </button>
             </div>
 
-            <nav className="flex flex-col gap-5 pt-8">
+            <nav className="flex flex-col gap-6 pt-8">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-2xl font-semibold text-zinc-200 hover:text-purple-400 transition-colors flex items-center justify-between"
+                  className="text-2xl font-bold font-heading text-zinc-200 hover:text-purple-400 transition-colors flex items-center justify-between"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <span>{link.label}</span>
@@ -149,7 +148,7 @@ export default function Navbar() {
               <div className="pt-6">
                 <Link
                   href="/#contact"
-                  className="block w-full py-3.5 text-center rounded-xl font-medium text-white bg-gradient-to-r from-purple-700 to-pink-600 shadow-lg"
+                  className="block w-full py-4 text-center rounded-2xl font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600 shadow-xl shadow-purple-950/50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Contact Us
