@@ -14,6 +14,11 @@ const navItems = [
     icon: LayoutGrid,
   },
   {
+    label: "Live Broadcast",
+    href: "/dashboard/live",
+    icon: Radio,
+  },
+  {
     label: "Create New Work",
     href: "/dashboard/works/new",
     icon: PlusCircle,
@@ -107,7 +112,7 @@ export function Sidebar() {
           >
             <div className="flex items-center gap-3">
               <Radio className="w-4 h-4 text-purple-400" />
-              <span>Live Broadcast</span>
+              <span>Public Live Page</span>
             </div>
           </Link>
         </nav>
