@@ -1,191 +1,140 @@
-import Image from "next/image"
-import Link from "next/link"
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="w-full py-12 px-4 md:px-8 lg:px-12 bg-black text-white border-t border-white/10">
+    <footer className="w-full py-16 px-4 md:px-8 lg:px-12 bg-zinc-950 text-white border-t border-zinc-800">
       <div className="mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          {/* Brand Info */}
           <div>
-            <Link href="/" className="text-whitefont-bold text-2xl inline-block mb-4">
-                <Image
-                  src="/logo.png"
-                  alt="Samzy media production logo"
-                  width={200}
-                  height={150}
-                />
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/logo.png"
+                alt="Samzy Media Production"
+                width={180}
+                height={120}
+                className="w-36 h-auto"
+              />
             </Link>
-            <p className="text-gray-400 mb-6">
-              Creating captivating visual experiences through motion, design, and sound.
+            <p className="text-zinc-400 text-xs leading-relaxed mb-6 font-mono">
+              Captivating visual experiences engineered through motion, spatial design, and live broadcasts.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-2.5">
               <a
                 href="https://web.facebook.com/samzy.skyler/"
                 target="_blank"
-                className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-purple-600 transition-colors"
+                rel="noreferrer"
+                className="h-8 w-8 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                aria-label="Facebook"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
                 </svg>
               </a>
               <a
                 href="https://www.instagram.com/samzy_sylver"
                 target="_blank"
-                className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-purple-600 transition-colors"
+                rel="noreferrer"
+                className="h-8 w-8 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                aria-label="Instagram"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
                 </svg>
               </a>
               <a
                 href="https://www.tiktok.com/@samzy_p"
                 target="_blank"
-                className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-purple-600 transition-colors"
+                rel="noreferrer"
+                className="h-8 w-8 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                aria-label="TikTok"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 448 512"><path fill="#ffffff" d="M448.5 209.9c-44 .1-87-13.6-122.8-39.2l0 178.7c0 33.1-10.1 65.4-29 92.6s-45.6 48-76.6 59.6-64.8 13.5-96.9 5.3-60.9-25.9-82.7-50.8-35.3-56-39-88.9 2.9-66.1 18.6-95.2 40-52.7 69.6-67.7 62.9-20.5 95.7-16l0 89.9c-15-4.7-31.1-4.6-46 .4s-27.9 14.6-37 27.3-14 28.1-13.9 43.9 5.2 31 14.5 43.7 22.4 22.1 37.4 26.9 31.1 4.8 46-.1 28-14.4 37.2-27.1 14.2-28.1 14.2-43.8l0-349.4 88 0c-.1 7.4 .6 14.9 1.9 22.2 3.1 16.3 9.4 31.9 18.7 45.7s21.3 25.6 35.2 34.6c19.9 13.1 43.2 20.1 67 20.1l0 87.4z"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 448 512"><path fill="currentColor" d="M448.5 209.9c-44 .1-87-13.6-122.8-39.2l0 178.7c0 33.1-10.1 65.4-29 92.6s-45.6 48-76.6 59.6-64.8 13.5-96.9 5.3-60.9-25.9-82.7-50.8-35.3-56-39-88.9 2.9-66.1 18.6-95.2 40-52.7 69.6-67.7 62.9-20.5 95.7-16l0 89.9c-15-4.7-31.1-4.6-46 .4s-27.9 14.6-37 27.3-14 28.1-13.9 43.9 5.2 31 14.5 43.7 22.4 22.1 37.4 26.9 31.1 4.8 46-.1 28-14.4 37.2-27.1 14.2-28.1 14.2-43.8l0-349.4 88 0c-.1 7.4 .6 14.9 1.9 22.2 3.1 16.3 9.4 31.9 18.7 45.7s21.3 25.6 35.2 34.6c19.9 13.1 43.2 20.1 67 20.1l0 87.4z"/></svg>
               </a>
               <a
                 href="https://www.linkedin.com/in/samzy-media-510855317/"
                 target="_blank"
-                className="h-10 w-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-purple-600 transition-colors"
+                rel="noreferrer"
+                className="h-8 w-8 rounded-none bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-colors"
+                aria-label="LinkedIn"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
                 </svg>
               </a>
             </div>
           </div>
 
+          {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-3">
+            <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-4">[ Navigation ]</h3>
+            <ul className="space-y-2.5 text-xs font-mono">
               <li>
-                <Link href="/" className="text-gray-400 hover:text-purple-400 transition-colors">
+                <Link href="/" className="text-zinc-400 hover:text-white transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/portfolio" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Portfolio
-                </Link>
-              </li>
-              {/* <li>
-                <Link href="/live-streaming" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Live Streaming
-                </Link>
-              </li> */}
-              <li>
-                <Link href="/#services" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Services
+                <Link href="/portfolio" className="text-zinc-400 hover:text-white transition-colors">
+                  Portfolio Works
                 </Link>
               </li>
               <li>
-                <Link href="/#contact" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Contact
+                <Link href="/live" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1.5">
+                  <span>Live Stream</span>
+                  <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />
+                </Link>
+              </li>
+              <li>
+                <Link href="/#services" className="text-zinc-400 hover:text-white transition-colors">
+                  Creative Services
+                </Link>
+              </li>
+              <li>
+                <Link href="/#contact" className="text-zinc-400 hover:text-white transition-colors">
+                  Contact Studio
                 </Link>
               </li>
             </ul>
           </div>
 
+          {/* Disciplines */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Services</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Motion Graphics
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Animations
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Logo Animations
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Media Production
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                  Sound Management
-                </Link>
-              </li>
+            <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-4">[ Disciplines ]</h3>
+            <ul className="space-y-2.5 text-xs font-mono text-zinc-400">
+              <li>Motion Design & Packaging</li>
+              <li>2D / 3D Character Animation</li>
+              <li>Cinema Logo Montages</li>
+              <li>Broadcast Direction</li>
+              <li>Audio Design & Mastering</li>
             </ul>
           </div>
 
+          {/* Contact Details */}
           <div>
-            <h3 className="text-lg font-bold mb-4">Contact</h3>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-400 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+            <h3 className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-4">[ Studio Contact ]</h3>
+            <ul className="space-y-2.5 text-xs font-mono text-zinc-400">
+              <li>LCA, Oregun, Ikeja Lagos</li>
+              <li>+234 814 569 5589</li>
+              <li>ssylvanus89@gmail.com</li>
+              <li className="pt-2">
+                <Link
+                  href="/login"
+                  className="text-zinc-600 hover:text-zinc-400 transition-colors uppercase tracking-wider text-[11px]"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-                <span className="text-gray-400">LCA, Oregun Ikeja Lagos</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-400 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                <span className="text-gray-400">+234 814 569 5589</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-400 mt-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                <span className="text-gray-400">ssylvanus89@gmail.com</span>
+                  Admin CMS Portal →
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-white/10 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} SamzyMedia. All rights reserved.</p>
+        <div className="mt-14 pt-8 border-t border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-zinc-500 text-[11px] font-mono">
+          <p>&copy; {new Date().getFullYear()} Samzy Media Production. All rights reserved.</p>
+          <p className="text-zinc-600">Engineered with Next.js & Tailwind CSS</p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

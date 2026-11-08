@@ -27,11 +27,13 @@ interface PortfolioGridProps {
   selectedCategory?: string | null;
 }
 
-function PortfolioCard({
+function BentoCard({
   item,
+  index,
   onOpenModal,
 }: {
   item: PortfolioItem;
+  index: number;
   onOpenModal: () => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -49,20 +51,28 @@ function PortfolioCard({
   }, [isHovered, item.type]);
 
   const workId = item._id || item.id;
+  // Bento-box layout rhythm: certain featured or key positions span 2 columns on larger viewports
+  const isWide = item.featured || index % 5 === 0;
 
   return (
     <motion.div
-      className="relative mb-6 break-inside-avoid rounded-xl overflow-hidden group bg-zinc-950 border border-white/5 transition-transform duration-300 hover:scale-[1.02]"
+      className={`relative rounded-sm overflow-hidden group bg-zinc-900 border border-zinc-800 transition-colors duration-200 hover:border-zinc-600 flex flex-col justify-end ${
+        isWide ? "md:col-span-2" : "col-span-1"
+      } min-h-[320px] md:min-h-[360px]`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.05 }}
     >
-      <div className="relative w-full overflow-hidden">
+      {/* Background Media */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-zinc-950">
         <Image
           src={item.thumbnail || "/placeholder.jpg"}
           alt={item.title}
-          width={800}
-          height={600}
-          className={`w-full h-auto object-cover transition-opacity duration-300 ${
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className={`object-cover transition-transform duration-500 group-hover:scale-105 ${
             isHovered && item.type === "video" ? "opacity-0" : "opacity-100"
           }`}
         />
@@ -75,41 +85,53 @@ function PortfolioCard({
             loop
             playsInline
             preload="none"
+            disablePictureInPicture
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           />
         )}
+      </div>
 
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent opacity-95 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-5">
-          <div className="text-[11px] font-semibold text-purple-400 uppercase tracking-wider mb-1">
+      {/* Stark Dark Vignette Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent opacity-90 group-hover:opacity-95 transition-opacity pointer-events-none" />
+
+      {/* Card Content & Action Bar */}
+      <div className="relative z-10 p-6 flex flex-col justify-end">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-400 bg-zinc-950/80 px-2 py-0.5 border border-zinc-800 rounded-none">
             {item.category}
-          </div>
-          <h3 className="text-base sm:text-lg font-bold text-white line-clamp-2 leading-snug">
-            {item.title}
-          </h3>
+          </span>
+          {item.featured && (
+            <span className="text-[10px] font-mono uppercase tracking-widest text-white bg-zinc-800 px-2 py-0.5 rounded-none border border-zinc-700">
+              Featured
+            </span>
+          )}
+        </div>
 
-          <div className="mt-3 flex items-center gap-2 pt-1 opacity-90 group-hover:opacity-100 transition-opacity">
-            {workId && (
-              <Link
-                href={`/portfolio/${workId}`}
-                onClick={(e) => e.stopPropagation()}
-                className="inline-flex items-center gap-1 text-xs font-medium text-zinc-200 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full transition-colors"
-              >
-                <span>Case Study</span>
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-            )}
-            <button
-              onClick={onOpenModal}
-              className="inline-flex items-center gap-1 text-xs font-medium text-white bg-purple-600/80 hover:bg-purple-600 px-3 py-1.5 rounded-full transition-colors"
-              aria-label={`Preview ${item.title}`}
+        <h3 className="text-xl md:text-2xl font-bold text-white uppercase tracking-tight line-clamp-1 mb-4">
+          {item.title}
+        </h3>
+
+        <div className="flex items-center gap-2 pt-1 opacity-90 group-hover:opacity-100 transition-opacity">
+          {workId && (
+            <Link
+              href={`/portfolio/${workId}`}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-black bg-white hover:bg-zinc-200 px-3.5 py-1.5 rounded-none transition-colors border border-white"
             >
-              {item.type === "video" && <Play className="h-3 w-3 fill-current" />}
-              <span>Preview</span>
-            </button>
-          </div>
+              <span>Case Study</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
+          <button
+            onClick={onOpenModal}
+            className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-zinc-200 hover:text-white bg-zinc-900/90 hover:bg-zinc-800 px-3.5 py-1.5 rounded-none transition-colors border border-zinc-700"
+            aria-label={`Preview ${item.title}`}
+          >
+            {item.type === "video" && <Play className="h-3 w-3 fill-current" />}
+            <span>Preview</span>
+          </button>
         </div>
       </div>
     </motion.div>
@@ -144,27 +166,23 @@ export default function PortfolioGrid({
 
   return (
     <>
-      {/* Masonry Layout */}
+      {/* Bento-Box Grid Layout */}
       {items.length > 0 ? (
-        <motion.div
-          className="columns-1 sm:columns-2 lg:columns-3 gap-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-[340px]">
           {items.map((portfolioItem, index) => (
-            <PortfolioCard
+            <BentoCard
               key={portfolioItem._id || portfolioItem.id || index}
               item={portfolioItem}
+              index={index}
               onOpenModal={() => setSelectedItem(portfolioItem)}
             />
           ))}
-        </motion.div>
+        </div>
       ) : (
-        <Card className="border-dashed bg-zinc-950/40 border-white/10">
-          <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <p className="text-zinc-400 mb-2">No portfolio works found</p>
-            <p className="text-xs text-zinc-500">Check back soon for new projects</p>
+        <Card className="border border-zinc-800 bg-zinc-950/60 rounded-none">
+          <CardContent className="flex flex-col items-center justify-center py-20 text-center">
+            <p className="text-zinc-400 font-mono text-sm uppercase tracking-wider mb-2">No portfolio works found</p>
+            <p className="text-xs text-zinc-500 font-mono">Check back soon for new releases</p>
           </CardContent>
         </Card>
       )}
@@ -179,24 +197,27 @@ export default function PortfolioGrid({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="relative max-w-5xl w-full">
+            <div className="relative max-w-5xl w-full bg-zinc-950 border border-zinc-800 rounded-none p-4 md:p-6 shadow-2xl">
               <button
                 onClick={() => setSelectedItem(null)}
-                className="absolute -top-12 right-0 z-50 bg-white/10 hover:bg-white/20 text-white rounded-full p-2 transition-colors"
+                className="absolute top-4 right-4 z-50 bg-zinc-900 border border-zinc-700 text-zinc-300 hover:text-white p-2 rounded-none transition-colors"
                 aria-label="Close modal"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
 
               {selectedItem.type === "video" ? (
-                <video
-                  src={selectedItem.mediaUrl}
-                  controls
-                  autoPlay
-                  className="w-full max-h-[75vh] rounded-xl object-contain bg-black shadow-2xl"
-                />
+                <div className="relative w-full aspect-video bg-black overflow-hidden border border-zinc-850">
+                  <video
+                    src={selectedItem.mediaUrl}
+                    controls
+                    autoPlay
+                    disablePictureInPicture
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               ) : (
-                <div className="relative w-full h-[75vh] rounded-xl overflow-hidden bg-black shadow-2xl">
+                <div className="relative w-full aspect-video overflow-hidden bg-black border border-zinc-850">
                   <Image
                     src={selectedItem.mediaUrl}
                     alt={selectedItem.title}
@@ -206,24 +227,24 @@ export default function PortfolioGrid({
                 </div>
               )}
 
-              <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-white">
+              <div className="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-white">
                 <div>
-                  <h3 className="text-xl font-bold sm:text-2xl">
-                    {selectedItem.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-purple-400 mt-0.5 uppercase tracking-wide">
+                  <p className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-1">
                     {selectedItem.category}
                   </p>
+                  <h3 className="text-xl md:text-2xl font-bold uppercase tracking-tight">
+                    {selectedItem.title}
+                  </h3>
                 </div>
 
                 {(selectedItem._id || selectedItem.id) && (
                   <Link
                     href={`/portfolio/${selectedItem._id || selectedItem.id}`}
                     onClick={() => setSelectedItem(null)}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-white text-black hover:bg-purple-600 hover:text-white transition-colors self-start sm:self-auto"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-mono uppercase tracking-wider bg-white text-black hover:bg-zinc-200 transition-colors rounded-none self-start sm:self-auto font-semibold border border-white"
                   >
-                    <span>View Full Case Study</span>
-                    <ArrowRight className="h-4 w-4" />
+                    <span>View Case Study</span>
+                    <ArrowRight className="h-3.5 w-3.5" />
                   </Link>
                 )}
               </div>

@@ -1,57 +1,69 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import Image from "next/image";
+import { Play } from "lucide-react";
 
 interface WorkCardProps {
   work: {
-    _id: string
-    title: string
-    thumbnail: string
-    category: string
-    type: "image" | "video"
-    featured: boolean
-  }
-  onEdit: () => void
-  onDelete: () => void
+    _id: string;
+    title: string;
+    thumbnail: string;
+    category: string;
+    type: "image" | "video";
+    featured: boolean;
+  };
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 export function WorkCard({ work, onEdit, onDelete }: WorkCardProps) {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-      <div className="relative aspect-square overflow-hidden bg-muted">
-        <img
-          src={work.thumbnail || "/placeholder.svg"}
-          alt={work.title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-        {work.featured && <Badge className="absolute top-2 right-2">Featured</Badge>}
-        {work.type === "video" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-            <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur">
-              <span className="text-white text-xl">▶</span>
+    <div className="bg-zinc-950 border border-zinc-800 rounded-none overflow-hidden transition-colors hover:border-zinc-700 flex flex-col justify-between">
+      <div>
+        <div className="relative aspect-video overflow-hidden bg-black border-b border-zinc-800">
+          <Image
+            src={work.thumbnail || "/placeholder.jpg"}
+            alt={work.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+          {work.featured && (
+            <span className="absolute top-2 left-2 text-[10px] font-mono uppercase tracking-wider bg-white text-black px-2 py-0.5 font-semibold">
+              Featured
+            </span>
+          )}
+          {work.type === "video" && (
+            <div className="absolute top-2 right-2 p-1 bg-black/80 border border-zinc-700 text-white">
+              <Play className="w-3 h-3 fill-current" />
             </div>
-          </div>
-        )}
-      </div>
-
-      <div className="p-4 space-y-3">
-        <div>
-          <h3 className="font-semibold line-clamp-2">{work.title}</h3>
-          <p className="text-sm text-muted-foreground capitalize">{work.category}</p>
+          )}
         </div>
 
-        <div className="flex gap-2">
-          <Button size="sm" variant="outline" className="flex-1 bg-transparent" onClick={onEdit}>
-            Edit
-          </Button>
-          <Button size="sm" variant="destructive" className="flex-1" onClick={onDelete}>
-            Delete
-          </Button>
+        <div className="p-4 space-y-2">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 block">
+            {work.category}
+          </span>
+          <h3 className="font-bold text-sm uppercase tracking-tight text-white line-clamp-1 font-heading">
+            {work.title}
+          </h3>
         </div>
       </div>
-    </Card>
-  )
+
+      <div className="p-4 pt-0 flex gap-2">
+        <button
+          onClick={onEdit}
+          className="flex-1 py-1.5 px-3 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-mono uppercase tracking-wider border border-zinc-800 transition-colors rounded-none"
+        >
+          Edit
+        </button>
+        <button
+          onClick={onDelete}
+          className="py-1.5 px-3 bg-red-950/30 hover:bg-red-950/60 text-red-400 text-xs font-mono uppercase tracking-wider border border-red-900/40 transition-colors rounded-none"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  );
 }

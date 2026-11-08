@@ -28,22 +28,25 @@ export default async function LivePage() {
   }
 
   return (
-    <main className="min-h-screen pt-28 pb-20 px-4 md:px-8 lg:px-12 bg-black text-white">
+    <main className="min-h-screen pt-28 pb-24 px-4 md:px-8 lg:px-12 bg-zinc-950 text-white">
       <div className="container mx-auto max-w-6xl">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-zinc-400 hover:text-white mb-8 transition-colors text-sm"
+          className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white mb-8 transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to home
+          Back to Home
         </Link>
 
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
-            Live Broadcast
+        <div className="mb-10">
+          <div className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-2">
+            <span>[ Broadcast Engineering ]</span>
+          </div>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight uppercase">
+            Live Stream
           </h1>
-          <p className="text-zinc-400 mt-2 text-base md:text-lg">
-            Experience our live multi-camera productions, streaming broadcasts, and event coverage in high definition.
+          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mt-4 leading-relaxed font-normal">
+            Direct multi-camera productions, stadium broadcasts, and live event coverage in high definition.
           </p>
         </div>
 
@@ -56,4 +59,3 @@ export default async function LivePage() {
     </main>
   );
 }
-

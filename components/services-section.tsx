@@ -1,95 +1,98 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import { Film, Layers, Play, Music, Tv, ImagesIcon } from "lucide-react"
-// import { mediaItems } from "@/lib/data"
-import Image from "next/image"
-import { Loader, ServicesSkeleton } from "./Loader"
-import { useProjects } from "@/context/ProjectsContext"
+import { motion } from "framer-motion";
+import { Film, Layers, Play, ImagesIcon } from "lucide-react";
+import Image from "next/image";
+import { ServicesSkeleton } from "./Loader";
+import { useProjects } from "@/context/ProjectsContext";
 
 export default function ServicesSection() {
-    const { projects: mediaItems, loading } = useProjects()
+  const { projects: mediaItems, loading } = useProjects();
 
   if (loading) {
-    return <ServicesSkeleton />
+    return <ServicesSkeleton />;
   }
+
   const services = [
     {
-      icon: <Layers className="h-10 w-10" />,
+      icon: <Layers className="h-6 w-6" />,
       title: "Motion Graphics",
-      image: mediaItems.find(item => item.category === "Motion Graphics"),
-      description: "Eye-catching motion graphics for brands, products, and digital content.",
+      image: mediaItems.find((item) => item.category === "Motion Graphics"),
+      description: "High-impact visual packages, broadcast intros, and typographic animations engineered for maximum engagement.",
     },
     {
-      icon: <Film className="h-10 w-10" />,
-      title: "Animations",
-      image: mediaItems.find(item => item.category === "Animations"),
-      description: "Custom animations that bring your ideas and stories to life with character and style.",
+      icon: <Film className="h-6 w-6" />,
+      title: "2D/3D Animation",
+      image: mediaItems.find((item) => item.category === "Animations"),
+      description: "Character rigging, dynamic spatial animations, and immersive conceptual worlds built for screen and stage.",
     },
     {
-      icon: <Play className="h-10 w-10" />,
-      title: "Logo Animations",
-      image: mediaItems.find(item => item.category === "Logo Montage"),
-      description: "Dynamic logo animations that enhance brand recognition and engagement.",
+      icon: <Play className="h-6 w-6" />,
+      title: "Logo Montages",
+      image: mediaItems.find((item) => item.category === "Logo Montage"),
+      description: "Signature cinematic logo stings and identity reveals designed to define your brand authority in milliseconds.",
     },
     {
-      icon: <ImagesIcon className="h-10 w-10" />,
-      title: "Birthday Designs",
-      image: mediaItems.find(item => item.category === "Birthday Designs"),
-      description: "Personalized birthday designs and visual content to celebrate special moments.",
+      icon: <ImagesIcon className="h-6 w-6" />,
+      title: "Broadcast Media",
+      image: mediaItems.find((item) => item.category === "Birthday Designs"),
+      description: "Live multi-camera graphics, lower thirds, overlay packages, and stadium visual loops.",
     },
     {
-      icon: <ImagesIcon className="h-10 w-10" />,
-      title: "Graphics Design",
-      image: mediaItems.find(item => item.category === "Graphics Design"),
-      description: "Professional graphic design services for social media, marketing materials, and branding.",
+      icon: <ImagesIcon className="h-6 w-6" />,
+      title: "Graphic Design Systems",
+      image: mediaItems.find((item) => item.category === "Graphics Design"),
+      description: "Comprehensive visual branding, digital posters, campaign artwork, and high-resolution event media.",
     },
-  ]
+  ];
 
   const container = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
       },
     },
-  }
+  };
 
   const item = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15 },
     show: { opacity: 1, y: 0 },
-  }
+  };
 
   return (
     <section
       id="services"
-      className="w-full py-20 px-4 md:px-8 lg:px-12 bg-gradient-to-br from-black to-purple-950 text-white"
+      className="w-full py-24 px-4 md:px-8 lg:px-12 bg-zinc-950 text-white border-b border-zinc-800/80"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="text-center mb-16">
+        <div className="mb-14">
+          <div className="text-xs font-mono uppercase tracking-widest text-zinc-400 mb-2">
+            <span>[ Capabilities ]</span>
+          </div>
           <motion.h2
-            className="text-4xl md:text-5xl font-bold mb-6 tracking-tight"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight uppercase"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.5 }}
           >
-            Our Services
+            Creative Disciplines
           </motion.h2>
           <motion.p
-            className="text-lg max-w-2xl mx-auto text-gray-300"
-            initial={{ opacity: 0, y: 20 }}
+            className="text-base sm:text-lg text-zinc-400 max-w-2xl mt-4 leading-relaxed font-normal"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
           >
-            We offer a comprehensive range of creative services to bring your vision to life
+            Our studio executes specialized motion direction, 3D world creation, and broadcast visual engineering.
           </motion.p>
         </div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={container}
           initial="hidden"
           whileInView="show"
@@ -98,28 +101,32 @@ export default function ServicesSection() {
           {services.map((service, index) => (
             <motion.div
               key={index}
-              className="relative h-60 rounded-xl overflow-hidden border border-white/10 group"
+              className="relative h-72 rounded-none overflow-hidden border border-zinc-800 bg-zinc-900 group"
               variants={item}
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
             >
               <Image
                 src={service.image?.thumbnail || "/placeholder.jpg"}
-                alt={service.image?.title || "Service Image"}
-                width={800}
-                height={600}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                alt={service.image?.title || service.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover transition-transform duration-500 group-hover:scale-105 opacity-40 group-hover:opacity-30"
               />
-              <div className="absolute inset-0 bg-black/60 group-hover:bg-black/50 transition-colors" />
-              <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                <div className="text-[#fea85b] mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold mb-3">{service.title}</h3>
-                <p className="text-gray-300 text-sm">{service.description}</p>
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/70 to-transparent" />
+              <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                <div className="text-white mb-3 p-2 bg-zinc-900/90 border border-zinc-800 self-start rounded-none">
+                  {service.icon}
+                </div>
+                <h3 className="text-lg font-bold uppercase tracking-tight text-white mb-2 font-heading">
+                  {service.title}
+                </h3>
+                <p className="text-zinc-400 text-xs leading-relaxed font-sans">
+                  {service.description}
+                </p>
               </div>
             </motion.div>
           ))}
         </motion.div>
       </div>
     </section>
-  )
+  );
 }

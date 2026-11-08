@@ -1,28 +1,30 @@
+@import url('https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 3.9%;
+  --background: 240 10% 3.9%;
   --foreground: 0 0% 98%;
-  --card: 0 0% 3.9%;
+  --card: 240 10% 4.9%;
   --card-foreground: 0 0% 98%;
-  --popover: 0 0% 3.9%;
+  --popover: 240 10% 4.9%;
   --popover-foreground: 0 0% 98%;
-  --primary: 270 95% 55%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 0 0% 14.9%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 240 5.9% 10%;
+  --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
-  --muted: 0 0% 14.9%;
-  --muted-foreground: 0 0% 63.9%;
-  --accent: 0 0% 14.9%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 3.7% 15.9%;
   --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --border: 0 0% 14.9%;
-  --input: 0 0% 14.9%;
-  --ring: 270 95% 55%;
-  --radius: 0.5rem;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.125rem;
 }
 
 html {
@@ -30,8 +32,8 @@ html {
 }
 
 body {
-  background-color: black;
-  color: white;
+  background-color: #09090b;
+  color: #fafafa;
 }
 
 @layer base {
@@ -39,14 +41,17 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-zinc-950 text-zinc-100 font-sans;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Clash Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: -0.025em;
   }
 }
 
-/* globals.css */
 @layer utilities {
   .skeleton {
-    @apply relative overflow-hidden bg-white/10 rounded-xl;
+    @apply relative overflow-hidden bg-zinc-900 rounded-sm;
   }
 
   .skeleton::after {
@@ -55,7 +60,7 @@ body {
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255,255,255,0.15),
+      rgba(255, 255, 255, 0.08),
       transparent
     );
     animation: shimmer 1.4s infinite;
@@ -67,4 +72,3 @@ body {
     }
   }
 }
-

@@ -3,15 +3,26 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, LogOut, Menu, Settings2 } from "lucide-react";
+import { LayoutGrid, Radio, PlusCircle, ExternalLink, LogOut, Menu, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
 const navItems = [
   {
-    label: "Works",
+    label: "Portfolio Works",
     href: "/dashboard",
-    icon: <LayoutDashboard className="size-4" />,
+    icon: LayoutGrid,
+  },
+  {
+    label: "Live Stream Control",
+    href: "/dashboard/live",
+    icon: Radio,
+    badge: "Live",
+  },
+  {
+    label: "New Project",
+    href: "/dashboard/works/new",
+    icon: PlusCircle,
   },
 ];
 
@@ -22,62 +33,120 @@ export function Sidebar() {
   return (
     <>
       <aside
-        className={`sm:w-64 w-full z-10 sm:relative fixed h-screen bg-black border-r border-sidebar-border flex flex-col ${
-          isOpen ? "flex" : "sm:flex hidden"
+        className={`w-64 z-40 sm:relative fixed h-screen bg-zinc-950 border-r border-zinc-800 flex flex-col transition-transform duration-200 ${
+          isOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
         }`}
       >
-        <div className="p-2 border-b border-sidebar-border">
+        {/* Brand Header */}
+        <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
           <Link
-            href="/"
-            className="text-white flex items-center gap-2 font-bold text-2xl"
+            href="/dashboard"
+            className="flex items-center gap-2.5 text-white font-bold text-sm uppercase tracking-wider font-heading"
           >
             <Image
               src="/logo-icon.png"
-              alt="Samzy media production logo"
-              width={200}
-              height={150}
-              className="w-12"
+              alt="Samzy Media"
+              width={100}
+              height={100}
+              className="w-7 h-auto"
             />
-            Samzy Media
+            <span>Samzy CMS</span>
           </Link>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="sm:hidden text-zinc-400 hover:text-white p-1"
+          >
+            <X className="w-5 h-5" />
+          </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setIsOpen(false)}
-              className={cn(
-                "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors",
-                pathname === item.href
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-sidebar-foreground hover:bg-sidebar-accent/50"
-              )}
-            >
-              <span>{item.icon}</span>
-              <span className="font-medium">{item.label}</span>
-            </Link>
-          ))}
+        {/* Navigation */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 px-3 py-2">
+            Navigation
+          </div>
+
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive =
+              item.href === "/dashboard"
+                ? pathname === "/dashboard"
+                : pathname.startsWith(item.href);
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsOpen(false)}
+                className={cn(
+                  "flex items-center justify-between px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider transition-colors rounded-none border",
+                  isActive
+                    ? "bg-zinc-900 text-white border-zinc-700 font-medium"
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-900/60 border-transparent"
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <Icon className={cn("w-4 h-4", isActive ? "text-white" : "text-zinc-500")} />
+                  <span>{item.label}</span>
+                </div>
+                {item.badge && (
+                  <span className="text-[9px] font-mono px-1.5 py-0.5 bg-red-950/80 text-red-400 border border-red-800/60 uppercase">
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+
+          <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 px-3 pt-6 pb-2">
+            Quick Links
+          </div>
+
+          <Link
+            href="/"
+            target="_blank"
+            className="flex items-center justify-between px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white hover:bg-zinc-900/60 transition-colors border border-transparent"
+          >
+            <div className="flex items-center gap-3">
+              <ExternalLink className="w-4 h-4 text-zinc-500" />
+              <span>Public Site</span>
+            </div>
+          </Link>
+          <Link
+            href="/live"
+            target="_blank"
+            className="flex items-center justify-between px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white hover:bg-zinc-900/60 transition-colors border border-transparent"
+          >
+            <div className="flex items-center gap-3">
+              <Radio className="w-4 h-4 text-zinc-500" />
+              <span>Live Page</span>
+            </div>
+          </Link>
         </nav>
 
-        <div className="p-4 border-t border-sidebar-border">
+        {/* User / Logout Footer */}
+        <div className="p-4 border-t border-zinc-800">
           <button
             onClick={async () => {
               await fetch("/api/auth/logout", { method: "POST" });
               window.location.href = "/login";
             }}
-            className="w-full text-red-500 text-left px-4 py-2 text-sm text-sidebar-foreground hover:bg-sidebar-accent/50 flex gap-2 items-center rounded-lg transition-colors"
+            className="w-full flex items-center justify-between px-3.5 py-2.5 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-red-400 hover:bg-red-950/20 transition-colors border border-transparent hover:border-red-900/40 rounded-none"
           >
-            Logout <LogOut className="size-4" />
+            <span>Sign Out</span>
+            <LogOut className="w-4 h-4" />
           </button>
         </div>
       </aside>
-      <div onClick={() => {
-        setIsOpen(!isOpen);
-      }} className="fixed sm:hidden top-2 z-20 right-6 p-2 rounded-md cursor-pointer">
-        <Menu className="text-white" />
-      </div>
+
+      {/* Mobile Toggle Trigger */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed sm:hidden top-3 left-4 z-30 p-2 bg-zinc-900 border border-zinc-800 text-zinc-300 rounded-none"
+        aria-label="Open navigation sidebar"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
     </>
   );
 }
