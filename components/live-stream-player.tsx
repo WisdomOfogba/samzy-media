@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Radio, Calendar } from "lucide-react";
 
 interface LiveStreamPlayerProps {
@@ -13,9 +14,13 @@ export function LiveStreamPlayer({
   isLive = true,
   title = "Live Stream Production",
 }: LiveStreamPlayerProps) {
-  const domain =
-    process.env.NEXT_PUBLIC_DOMAIN ||
-    (typeof window !== "undefined" ? window.location.hostname : "localhost");
+  const [hostname, setHostname] = useState<string>("");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHostname(window.location.hostname);
+    }
+  }, []);
 
   // Offline State
   if (!isLive || !activeYouTubeVideoId) {
@@ -68,11 +73,17 @@ export function LiveStreamPlayer({
 
         {/* Live Chat Embed (1 col) */}
         <div className="w-full md:col-span-1 border border-white/10 bg-zinc-900/60 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-md">
-          <iframe
-            src={`https://www.youtube.com/live_chat?v=${activeYouTubeVideoId}&embed_domain=${domain}`}
-            className="w-full h-[500px] md:h-full min-h-[400px] border-none bg-black/60"
-            title="Live Chat"
-          />
+          {hostname ? (
+            <iframe
+              src={`https://www.youtube.com/live_chat?v=${activeYouTubeVideoId}&embed_domain=${hostname}`}
+              className="w-full h-[500px] md:h-full min-h-[400px] border-none bg-black/60"
+              title="Live Chat"
+            />
+          ) : (
+            <div className="w-full h-[500px] md:h-full min-h-[400px] flex items-center justify-center bg-black/60 text-zinc-500 text-xs">
+              Loading live chat...
+            </div>
+          )}
         </div>
       </div>
     </div>
